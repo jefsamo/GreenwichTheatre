@@ -86,7 +86,7 @@ export function Header() {
   ));
 
   return (
-    <Box pb={120}>
+    <Box pb={50}>
       <header className={classes.header}>
         <div className="container">
           <Group justify="space-between" h="100%">

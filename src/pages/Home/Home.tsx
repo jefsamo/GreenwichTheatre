@@ -1,15 +1,11 @@
-import { Space } from "@mantine/core";
-import { Header } from "./Header";
 import { PlayCard } from "../../components/PlayCard/PlayCard";
 import "./Home.css";
 
 const Home = () => {
   return (
     <div>
-      <Header />
-      <Space w="md" />
       <div className="container">
-        <div className="card">
+        <div className="my-card">
           <PlayCard />
           <PlayCard />
           <PlayCard />
