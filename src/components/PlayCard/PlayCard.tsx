@@ -11,11 +11,11 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import classes from "./PlayCard.module.css";
+import { Link } from "react-router-dom";
 
 export function PlayCard() {
   const linkProps = {
     href: "https://mantine.dev",
-    target: "_blank",
     rel: "noopener noreferrer",
   };
   const theme = useMantineTheme();
@@ -23,9 +23,9 @@ export function PlayCard() {
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section>
-        <a {...linkProps}>
+        <Link to="play/1" {...linkProps}>
           <Image src="https://i.imgur.com/Cij5vdL.png" height={180} />
-        </a>
+        </Link>
       </Card.Section>
 
       <Badge
