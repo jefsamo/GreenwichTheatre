@@ -7,12 +7,14 @@ import {
   Space,
   Text,
 } from "@mantine/core";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ReviewCard } from "../../components/ReviewCard/ReviewCard";
 import CustomerType from "../../components/CustomerType/CustomerType";
+import { IconArrowRight } from "@tabler/icons-react";
 
 const Play = () => {
   const { playId } = useParams();
+  const navigate = useNavigate();
   return (
     <div className="container">
       <Grid gutter="xl">
@@ -60,6 +62,17 @@ const Play = () => {
             <Button size="md">Buy Ticket</Button>
           </Group>
           <CustomerType />
+          <CustomerType />
+          <CustomerType />
+          <Button
+            variant="light"
+            rightSection={<IconArrowRight size={14} />}
+            onClick={() => {
+              navigate("/reservation");
+            }}
+          >
+            Proceed
+          </Button>
         </Grid.Col>
       </Grid>
     </div>
