@@ -1,4 +1,4 @@
-import { Avatar, Group, Text } from "@mantine/core";
+import { Avatar, Group, Rating, Text } from "@mantine/core";
 
 export function ReviewCard() {
   return (
@@ -14,6 +14,8 @@ export function ReviewCard() {
           <Text size="xs" c="dimmed">
             10 minutes ago
           </Text>
+
+          <Rating defaultValue={2} />
         </div>
       </Group>
       <Text pl={54} pt="sm" size="sm">
