@@ -1,5 +1,5 @@
 import { Grid, Space, Text, TextInput } from "@mantine/core";
-import { DateTimePicker } from "@mantine/dates";
+import { DateInput } from "@mantine/dates";
 import { useState } from "react";
 
 const Reservation = () => {
@@ -11,11 +11,16 @@ const Reservation = () => {
         <Grid.Col span={6}>
           <Text size="lg">Details</Text>
           <Text size="md">Adult 1</Text>
-          <TextInput label="First Name" />
+          <TextInput label="First Name" placeholder="First Name" />
           <Space h="md" />
-          <TextInput label="Last Name" />
+          <TextInput label="Last Name" placeholder="Last Name" />
           <Space h="md" />
-          <DateTimePicker value={value} onChange={setValue} />
+          <DateInput
+            value={value}
+            onChange={setValue}
+            label="Date of Birth"
+            placeholder="Date of Birth"
+          />{" "}
         </Grid.Col>
         <Grid.Col span={6}>2</Grid.Col>
       </Grid>
