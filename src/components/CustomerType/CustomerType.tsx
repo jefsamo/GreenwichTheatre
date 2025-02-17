@@ -15,11 +15,11 @@ const CustomerType = () => {
     >
       <Text>Adult</Text>
       <ActionIcon className={classes.action}>
-        <IconMinus size={16} color={theme.colors.red[6]} />
+        <IconMinus size={16} color={theme.colors.dark[6]} />
       </ActionIcon>
       <Text>1</Text>
       <ActionIcon className={classes.action}>
-        <IconPlus size={16} color={theme.colors.green[6]} />
+        <IconPlus size={16} color={theme.colors.dark[6]} />
       </ActionIcon>
     </Flex>
   );
