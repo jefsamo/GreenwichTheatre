@@ -4,6 +4,7 @@ import { Login } from "./pages/Login/Login";
 import { Register } from "./pages/Register/Register";
 import AppLayout from "./ui/AppLayout";
 import Play from "./pages/Play/Play";
+import Reservation from "./pages/Reservation/Reservation";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route element={<AppLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/play/:playId" element={<Play />} />
+          <Route path="/reservation" element={<Reservation />} />
         </Route>
       </Routes>
     </BrowserRouter>
