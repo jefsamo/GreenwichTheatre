@@ -90,7 +90,9 @@ export function Header() {
       <header className={classes.header}>
         <div className="container">
           <Group justify="space-between" h="100%">
-            <MantineLogo size={30} />
+            <Link to="/">
+              <MantineLogo size={30} />
+            </Link>
 
             <Input placeholder="Search play..." w={"40%"} />
 
