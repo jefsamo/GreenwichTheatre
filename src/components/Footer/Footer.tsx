@@ -6,12 +6,15 @@ import {
 import { ActionIcon, Container, Group } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Footer.module.css";
+import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
     <div className={classes.footer}>
       <Container className={classes.inner}>
-        <MantineLogo size={28} />
+        <Link to="/">
+          <MantineLogo size={30} />
+        </Link>
         <Group
           gap={0}
           className={classes.links}
