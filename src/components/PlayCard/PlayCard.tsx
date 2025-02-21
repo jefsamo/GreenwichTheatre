@@ -13,7 +13,20 @@ import {
 import classes from "./PlayCard.module.css";
 import { Link } from "react-router-dom";
 
-export function PlayCard() {
+type PlayCardType = {
+  imageUrl: string;
+  price: number;
+  availableSeats: number;
+  totalSeats: number;
+  title: string;
+  timeOfPlay: Date;
+};
+
+type PlayCardProp = {
+  play: PlayCardType;
+};
+
+export function PlayCard({ play }: PlayCardProp) {
   const linkProps = {
     href: "https://mantine.dev",
     rel: "noopener noreferrer",
@@ -24,7 +37,7 @@ export function PlayCard() {
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section>
         <Link to="play/1" {...linkProps}>
-          <Image src="https://i.imgur.com/Cij5vdL.png" height={180} />
+          <Image src={`${play.imageUrl}`} height={180} />
         </Link>
       </Card.Section>
 
@@ -37,7 +50,7 @@ export function PlayCard() {
       </Badge>
 
       <Text className={classes.title} fw={500} component="a" {...linkProps}>
-        Resident Evil Village review
+        {play.title}
       </Text>
 
       <Text fz="sm" c="dimmed" lineClamp={4}>
