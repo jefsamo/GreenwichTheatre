@@ -10,8 +10,28 @@ import {
 } from "@mantine/core";
 import classes from "./Login.module.css";
 import { Link } from "react-router-dom";
+import { useForm } from "@mantine/form";
+import { useLogin } from "../../hooks/useLogin";
+import { LoginType } from "../../types";
 
 export function Login() {
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      email: "",
+      password: "",
+    },
+
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+    },
+  });
+  const { login, isPending } = useLogin();
+
+  const handleLogin = (values: LoginType) => {
+    login(values);
+  };
+
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
@@ -27,17 +47,27 @@ export function Login() {
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput label="Email" placeholder="you@mantine.dev" required />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          required
-          mt="md"
-        />
+        <form onSubmit={form.onSubmit(handleLogin)}>
+          <TextInput
+            label="Email"
+            placeholder="you@mantine.dev"
+            required
+            key={form.key("email")}
+            {...form.getInputProps("email")}
+          />
+          <PasswordInput
+            label="Password"
+            placeholder="Your password"
+            required
+            mt="md"
+            key={form.key("password")}
+            {...form.getInputProps("password")}
+          />
 
-        <Button fullWidth mt="xl">
-          Sign in
-        </Button>
+          <Button fullWidth mt="xl" type="submit" loading={isPending}>
+            Sign in
+          </Button>
+        </form>
       </Paper>
     </Container>
   );

@@ -12,8 +12,10 @@ import {
 } from "@mantine/core";
 import classes from "./PlayCard.module.css";
 import { Link } from "react-router-dom";
+import { PlayCardProp } from "../../types";
 
-export function PlayCard() {
+export function PlayCard({ play }: PlayCardProp) {
+  const { id } = play;
   const linkProps = {
     href: "https://mantine.dev",
     rel: "noopener noreferrer",
@@ -23,8 +25,8 @@ export function PlayCard() {
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section>
-        <Link to="play/1" {...linkProps}>
-          <Image src="https://i.imgur.com/Cij5vdL.png" height={180} />
+        <Link to={`play/${id}`} {...linkProps}>
+          <Image src={`${play.imageUrl}`} height={180} />
         </Link>
       </Card.Section>
 
@@ -37,7 +39,7 @@ export function PlayCard() {
       </Badge>
 
       <Text className={classes.title} fw={500} component="a" {...linkProps}>
-        Resident Evil Village review
+        {play.title}
       </Text>
 
       <Text fz="sm" c="dimmed" lineClamp={4}>
