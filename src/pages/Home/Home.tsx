@@ -5,7 +5,6 @@ import "./Home.css";
 
 const Home = () => {
   const { plays = [], isLoading } = useGetPlays();
-  // console.log(plays.data);
   if (isLoading) {
     return (
       <Center h="100dvh">
@@ -20,13 +19,6 @@ const Home = () => {
           {plays?.map((play: any, i: number) => {
             return <PlayCard key={i} play={play} />;
           })}
-          {/* <PlayCard />
-          <PlayCard />
-          <PlayCard />
-          <PlayCard />
-          <PlayCard />
-          <PlayCard />
-          <PlayCard /> */}
         </div>
       </div>
     </div>

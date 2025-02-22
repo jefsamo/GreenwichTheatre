@@ -1,9 +1,11 @@
 import {
   Button,
+  Center,
   Divider,
   Grid,
   Group,
   Image,
+  Loader,
   Space,
   Text,
 } from "@mantine/core";
@@ -11,10 +13,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ReviewCard } from "../../components/ReviewCard/ReviewCard";
 import CustomerType from "../../components/CustomerType/CustomerType";
 import { IconArrowRight } from "@tabler/icons-react";
+import { useGetPlay } from "../../hooks/useGetPlay";
 
 const Play = () => {
   const { playId } = useParams();
+  const { play, isLoading } = useGetPlay();
+
   const navigate = useNavigate();
+  if (isLoading) {
+    return (
+      <Center h="100dvh">
+        <Loader />
+      </Center>
+    );
+  }
+  console.log(play);
+  const { title } = play;
+
   return (
     <div className="container">
       <Grid gutter="xl">
@@ -41,7 +56,7 @@ const Play = () => {
         </Grid.Col>
         <Grid.Col span={6}>
           <Text size="lg" fw={700}>
-            Shadow of the Horizon
+            {play ? title : ""}
           </Text>
           <Space h="md" />
           <Text size="md">

@@ -12,21 +12,10 @@ import {
 } from "@mantine/core";
 import classes from "./PlayCard.module.css";
 import { Link } from "react-router-dom";
-
-type PlayCardType = {
-  imageUrl: string;
-  price: number;
-  availableSeats: number;
-  totalSeats: number;
-  title: string;
-  timeOfPlay: Date;
-};
-
-type PlayCardProp = {
-  play: PlayCardType;
-};
+import { PlayCardProp } from "../../types";
 
 export function PlayCard({ play }: PlayCardProp) {
+  const { id } = play;
   const linkProps = {
     href: "https://mantine.dev",
     rel: "noopener noreferrer",
@@ -36,7 +25,7 @@ export function PlayCard({ play }: PlayCardProp) {
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section>
-        <Link to="play/1" {...linkProps}>
+        <Link to={`play/${id}`} {...linkProps}>
           <Image src={`${play.imageUrl}`} height={180} />
         </Link>
       </Card.Section>
