@@ -1,12 +1,16 @@
 import { Button, Center, Grid, Space, Text, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { useState } from "react";
-import classes from "./Reservation.module.css";
+// import classes from "./Reservation.module.css";
 import { IconArrowRight } from "@tabler/icons-react";
 
 const Reservation = () => {
   const [value, setValue] = useState<Date | null>(null);
-
+  const sections = [
+    { name: "Area A", rows: 2, seatsPerRow: 6 },
+    { name: "Area B", rows: 3, seatsPerRow: 8 },
+    { name: "Area C", rows: 2, seatsPerRow: 10 },
+  ];
   return (
     <div className="container">
       <Grid gutter="md">
@@ -42,7 +46,7 @@ const Reservation = () => {
             placeholder="Date of Birth"
           />{" "}
         </Grid.Col>
-        <Grid.Col span={6} px="20px">
+        {/* <Grid.Col span={6} px="20px">
           <Text size="lg" fw="bolder">
             Choose Seat
           </Text>
@@ -101,6 +105,71 @@ const Reservation = () => {
             <div className={classes.seat}>8</div>
           </div>
           <Space h="md" />
+        </Grid.Col> */}
+        <Grid.Col span={6} px="20px">
+          {/* Stage Area */}
+          <div style={{ textAlign: "center", marginBottom: "20px" }}>
+            <Text
+              size="xl"
+              fw="bolder"
+              style={{
+                background: "black",
+                color: "white",
+                padding: "10px",
+                borderRadius: "8px",
+              }}
+            >
+              🎤 STAGE
+            </Text>
+          </div>
+
+          {sections.map((section) => (
+            <div key={section.name}>
+              <Text size="lg" fw="500">
+                {section.name}
+              </Text>
+              <Space h="md" />
+
+              {/* Seat Grid */}
+              <div
+                style={{
+                  display: "grid",
+                  gap: "5px",
+                  justifyContent: "center",
+                }}
+              >
+                {[...Array(section.rows)].map((_, rowIndex) => (
+                  <div
+                    key={rowIndex}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    {[...Array(section.seatsPerRow)].map((_, seatIndex) => (
+                      <div
+                        key={seatIndex}
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          background: "#ddd",
+                          textAlign: "center",
+                          lineHeight: "40px",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {rowIndex * section.seatsPerRow + seatIndex + 1}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+              <Space h="lg" />
+            </div>
+          ))}
         </Grid.Col>
       </Grid>
       <Center>
