@@ -6,8 +6,15 @@ export const getAllPlays = async () => {
 
   return res?.data?.data;
 };
+
 export const getPlay = async (id: string) => {
   const res = await axios.get(`${BASE_URL}/play/${id}`);
+
+  return res?.data?.data;
+};
+
+export const getReviewsByPlayId = async (playId: string) => {
+  const res = await axios.get(`${BASE_URL}/review/${playId}/reviews`);
 
   return res?.data?.data;
 };

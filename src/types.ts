@@ -1,6 +1,8 @@
 export type PlayCardType = {
   id: string;
   imageUrl: string;
+  mainImageUrl: string;
+  description: string;
   price: number;
   availableSeats: number;
   totalSeats: number;
@@ -39,4 +41,13 @@ export type Response = {
   errors: string[];
   message: string;
   data: UserType;
+};
+
+export type Review = {
+  rating: number;
+  comment: string;
+};
+
+export type ReviewCardProp = {
+  review: Review;
 };

@@ -8,6 +8,7 @@ import Reservation from "./pages/Reservation/Reservation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { NotFound } from "./pages/NotFound/NotFound";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,6 +28,14 @@ function App() {
           <Route element={<AppLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/play/:playId" element={<Play />} />
+          </Route>
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="/reservation" element={<Reservation />} />
           </Route>
           <Route path="*" element={<NotFound />} />

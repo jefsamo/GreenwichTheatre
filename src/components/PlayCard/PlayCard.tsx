@@ -1,31 +1,16 @@
-import { IconBookmark, IconHeart, IconShare } from "@tabler/icons-react";
-import {
-  ActionIcon,
-  Avatar,
-  Badge,
-  Card,
-  Center,
-  Group,
-  Image,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
+import { Badge, Card, Image, Text } from "@mantine/core";
 import classes from "./PlayCard.module.css";
 import { Link } from "react-router-dom";
 import { PlayCardProp } from "../../types";
+import { truncateWords } from "../../constants";
 
 export function PlayCard({ play }: PlayCardProp) {
-  const { id } = play;
-  const linkProps = {
-    href: "https://mantine.dev",
-    rel: "noopener noreferrer",
-  };
-  const theme = useMantineTheme();
+  const { id, description } = play;
 
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section>
-        <Link to={`play/${id}`} {...linkProps}>
+        <Link to={`play/${id}`}>
           <Image src={`${play.imageUrl}`} height={180} />
         </Link>
       </Card.Section>
@@ -38,43 +23,13 @@ export function PlayCard({ play }: PlayCardProp) {
         outstanding
       </Badge>
 
-      <Text className={classes.title} fw={500} component="a" {...linkProps}>
+      <Text className={classes.title} fw={500} component="a">
         {play.title}
       </Text>
 
       <Text fz="sm" c="dimmed" lineClamp={4}>
-        Resident Evil Village is a direct sequel to 2017’s Resident Evil 7, but
-        takes a very different direction to its predecessor, namely the fact
-        that this time round instead of fighting against various mutated
-        zombies, you’re now dealing with more occult enemies like werewolves and
-        vampires.
+        {truncateWords(description, 30)}
       </Text>
-
-      <Group justify="space-between" className={classes.footer}>
-        <Center>
-          <Avatar
-            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
-            size={24}
-            radius="xl"
-            mr="xs"
-          />
-          <Text fz="sm" inline>
-            Bill Wormeater
-          </Text>
-        </Center>
-
-        <Group gap={8} mr={0}>
-          <ActionIcon className={classes.action}>
-            <IconHeart size={16} color={theme.colors.red[6]} />
-          </ActionIcon>
-          <ActionIcon className={classes.action}>
-            <IconBookmark size={16} color={theme.colors.yellow[7]} />
-          </ActionIcon>
-          <ActionIcon className={classes.action}>
-            <IconShare size={16} color={theme.colors.blue[6]} />
-          </ActionIcon>
-        </Group>
-      </Group>
     </Card>
   );
 }
