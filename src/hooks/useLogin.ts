@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { login as loginApi } from "../services/apiAuth";
 import { toast } from "react-hot-toast";
-import { LoginType } from "../types";
+import { LoginType, UserType } from "../types";
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export const useLogin = () => {
       return user;
     },
     onSuccess: (user: unknown) => {
-      queryClient.setQueryData(["user"], user);
+      queryClient.setQueryData(["user"], user as UserType);
       toast.success("Login successful");
       navigate("/", { replace: true });
     },

@@ -6,6 +6,7 @@ import {
   Group,
   Image,
   Loader,
+  Skeleton,
   Space,
   Text,
 } from "@mantine/core";
@@ -14,12 +15,23 @@ import { ReviewCard } from "../../components/ReviewCard/ReviewCard";
 import CustomerType from "../../components/CustomerType/CustomerType";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useGetPlay } from "../../hooks/useGetPlay";
+import { useEffect } from "react";
+import { useGetReviewsByPlayId } from "../../hooks/useGetReviewsByPlayId";
+import { PlayCardType, Review } from "../../types";
 
 const Play = () => {
   const { playId } = useParams();
   const { play, isLoading } = useGetPlay();
-
+  const { reviews, isLoading: isReviewsLoading } = useGetReviewsByPlayId();
   const navigate = useNavigate();
+  const title = play?.title;
+
+  useEffect(() => {
+    if (title) {
+      document.title = `Play | ${title}`;
+    }
+  }, [title]);
+
   if (isLoading) {
     return (
       <Center h="100dvh">
@@ -27,51 +39,50 @@ const Play = () => {
       </Center>
     );
   }
-  console.log(play);
-  const { title } = play;
+  const { description, mainImageUrl } = play as PlayCardType;
 
   return (
     <div className="container">
       <Grid gutter="xl">
         <Grid.Col span={6}>
-          <Image
-            radius="md"
-            src="https://images.pexels.com/photos/30653671/pexels-photo-30653671/free-photo-of-young-man-in-retro-asian-decor-room.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          />
+          <Image radius="md" src={mainImageUrl} />
           {playId}
           <Space h="lg" />
           <Text size="lg" fw={700}>
             Reviews
           </Text>
-          <Space h="lg" />
-          <ReviewCard />
-          <Space h="lg" />
-          <Divider />
-          <Space h="lg" />
-          <ReviewCard />
-          <Space h="lg" />
-          <Divider />
-          <Space h="lg" />
-          <ReviewCard />
+          {reviews &&
+            reviews.length > 0 &&
+            reviews.map((review: Review, i: number) => {
+              return (
+                <>
+                  <Space h="lg" />
+                  <ReviewCard key={i} review={review} />
+                  <Space h="lg" />
+                  <Divider />
+                </>
+              );
+            })}
+
+          {isReviewsLoading && (
+            <>
+              <Skeleton height={50} circle mb="xl" />
+              <Skeleton height={8} radius="xl" />
+              <Skeleton height={8} mt={6} radius="xl" />
+              <Skeleton height={8} mt={6} width="70%" radius="xl" />
+            </>
+          )}
+
+          {reviews && reviews?.length === 0 && (
+            <Text size="md">No reviews for this play</Text>
+          )}
         </Grid.Col>
         <Grid.Col span={6}>
           <Text size="lg" fw={700}>
-            {play ? title : ""}
+            {title}
           </Text>
           <Space h="md" />
-          <Text size="md">
-            In a world where the sun hasn’t set in over a century, a lone
-            scientist, Dr. Elias Voss, discovers a terrifying truth—night is
-            coming back, and with it, an ancient force long thought to be a
-            myth. As society crumbles under the fear of darkness, Elias must
-            team up with a rebellious journalist and a convicted hacker to
-            uncover the origins of the eternal daylight before time runs out.
-            But when the first sunset in a hundred years finally arrives, they
-            realize the darkness is not empty. Something has been waiting. And
-            it’s hungry. A gripping sci-fi thriller filled with mystery,
-            suspense, and a race against time, Shadow of the Horizon will leave
-            you questioning what truly lies beyond the light.
-          </Text>
+          <Text size="md">{description}</Text>
           <Space h="md" />
           <Group>
             <Button size="md">Buy Ticket</Button>

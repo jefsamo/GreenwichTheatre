@@ -1,89 +1,14 @@
-import {
-  IconBook,
-  IconChartPie3,
-  IconChevronDown,
-  IconCode,
-  IconCoin,
-  IconFingerprint,
-  IconNotification,
-} from "@tabler/icons-react";
-import {
-  Box,
-  Burger,
-  Button,
-  Center,
-  Collapse,
-  Divider,
-  Drawer,
-  Group,
-  Input,
-  ScrollArea,
-  Text,
-  ThemeIcon,
-  UnstyledButton,
-  useMantineTheme,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { IconLogout } from "@tabler/icons-react";
+import { Box, Button, Group, Input } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Header.module.css";
-import { Link } from "react-router-dom";
-
-const mockdata = [
-  {
-    icon: IconCode,
-    title: "Open source",
-    description: "This Pokémon’s cry is very loud and distracting",
-  },
-  {
-    icon: IconCoin,
-    title: "Free for everyone",
-    description: "The fluid of Smeargle’s tail secretions changes",
-  },
-  {
-    icon: IconBook,
-    title: "Documentation",
-    description: "Yanma is capable of seeing 360 degrees without",
-  },
-  {
-    icon: IconFingerprint,
-    title: "Security",
-    description: "The shell’s rounded shape and the grooves on its.",
-  },
-  {
-    icon: IconChartPie3,
-    title: "Analytics",
-    description: "This Pokémon uses its flying ability to quickly chase",
-  },
-  {
-    icon: IconNotification,
-    title: "Notifications",
-    description: "Combusken battles with the intensely hot flames it spews",
-  },
-];
+import { Link, useNavigate } from "react-router-dom";
+import { getCurrentUser } from "../../constants";
 
 export function Header() {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-    useDisclosure(false);
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const theme = useMantineTheme();
+  const navigate = useNavigate();
 
-  const links = mockdata.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.title}>
-      <Group wrap="nowrap" align="flex-start">
-        <ThemeIcon size={34} variant="default" radius="md">
-          <item.icon size={22} color={theme.colors.blue[6]} />
-        </ThemeIcon>
-        <div>
-          <Text size="sm" fw={500}>
-            {item.title}
-          </Text>
-          <Text size="xs" c="dimmed">
-            {item.description}
-          </Text>
-        </div>
-      </Group>
-    </UnstyledButton>
-  ));
+  const user = getCurrentUser();
 
   return (
     <Box pb={50}>
@@ -97,62 +22,48 @@ export function Header() {
             <Input placeholder="Search play..." w={"40%"} />
 
             <Group visibleFrom="sm">
-              <Link to="/login">
-                <Button variant="default">Log in</Button>
-              </Link>
-              <Link to="/register">
-                <Button>Sign up</Button>
-              </Link>
+              {!user && (
+                <>
+                  <Link to="/login">
+                    <Button variant="default">Log in</Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button>Sign up</Button>
+                  </Link>
+                </>
+              )}
+              {user && user.role !== "Operator" && (
+                <Link to="/reservations">
+                  <Button variant="default">Reservations</Button>
+                </Link>
+              )}
+              {user && user.role === "Operator" && (
+                <>
+                  <Link to="/reservations">
+                    <Button variant="default">Reservations</Button>
+                  </Link>
+                  <Link to="/check-in">
+                    <Button variant="default">Check-in</Button>
+                  </Link>
+                </>
+              )}
+              {user && (
+                <Button
+                  variant="default"
+                  size="xs"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    localStorage.removeItem("user");
+                    navigate("/", { replace: true });
+                  }}
+                >
+                  <IconLogout />
+                </Button>
+              )}
             </Group>
-
-            <Burger
-              opened={drawerOpened}
-              onClick={toggleDrawer}
-              hiddenFrom="sm"
-            />
           </Group>
         </div>
       </header>
-
-      <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
-        size="100%"
-        padding="md"
-        title="Navigation"
-        hiddenFrom="sm"
-        zIndex={1000000}
-      >
-        <ScrollArea h="calc(100vh - 80px" mx="-md">
-          <Divider my="sm" />
-
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown size={16} color={theme.colors.blue[6]} />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
-
-          <Divider my="sm" />
-
-          <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
-          </Group>
-        </ScrollArea>
-      </Drawer>
     </Box>
   );
 }
