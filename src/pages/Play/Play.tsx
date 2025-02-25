@@ -29,14 +29,24 @@ const Play = () => {
   const [adult, setAdult] = useState(0);
   const [children, setChildren] = useState(0);
   const [oldAgePensioner, setOldAgePensioner] = useState(0);
+  const {
+    showAddToCart,
+    setShowAddToCart,
+    addToCart,
+    cart,
+    // adult,
+    // setAdult,
+    // childrens,
+    // setChildrens,
+    // oldAgePensioner,
+    // setOldAgePensioner,
+  } = useCartContext();
 
   const customerType = [
     { type: "Adult", value: adult, setValue: setAdult },
     { type: "Children", value: children, setValue: setChildren },
     { type: "OAP", value: oldAgePensioner, setValue: setOldAgePensioner },
   ];
-
-  const { showAddToCart, setShowAddToCart, addToCart, cart } = useCartContext();
 
   const playExistInCart = cart.some((c) => c.play.id === play?.id);
 
@@ -129,7 +139,6 @@ const Play = () => {
                     totalOldAgePensioner: oldAgePensioner,
                     play,
                   });
-                  console.log("clicked add to cart");
                 }}
                 disabled={
                   !playExistInCart

@@ -21,6 +21,12 @@ const initialState: InitialStateType = {
   clearCart: () => {},
   showAddToCart: false,
   setShowAddToCart: () => {},
+  adult: 0,
+  setAdult: () => {},
+  childrens: 0,
+  setChildrens: () => {},
+  oldAgePensioner: 0,
+  setOldAgePensioner: () => {},
   //   showCart: () => {},
 };
 
@@ -29,6 +35,9 @@ const CartContext = createContext<InitialStateType>(initialState);
 export const CartProvider = ({ children }: CartProviderProp) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [showAddToCart, setShowAddToCart] = useState(false);
+  const [adult, setAdult] = useState(0);
+  const [childrens, setChildrens] = useState(0);
+  const [oldAgePensioner, setOldAgePensioner] = useState(0);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(state.cart));
@@ -62,6 +71,12 @@ export const CartProvider = ({ children }: CartProviderProp) => {
         setShowAddToCart,
         clearCart,
         addToCart,
+        adult,
+        setAdult,
+        childrens,
+        setChildrens,
+        oldAgePensioner,
+        setOldAgePensioner,
       }}
     >
       {children}

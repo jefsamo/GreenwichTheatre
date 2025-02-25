@@ -25,3 +25,7 @@ export const getLocalStorageCart: () => [] | CartType[] = () => {
     return [];
   }
 };
+
+export const calculateYear = (age: number): Date => {
+  return new Date(new Date().setFullYear(new Date().getFullYear() - age));
+};

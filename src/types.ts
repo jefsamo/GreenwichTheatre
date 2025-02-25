@@ -72,5 +72,11 @@ export type InitialStateType = {
   totalAmount: number;
   showAddToCart: boolean;
   setShowAddToCart: React.Dispatch<React.SetStateAction<boolean>>;
+  adult: number;
+  setAdult: React.Dispatch<React.SetStateAction<number>>;
+  childrens: number;
+  setChildrens: React.Dispatch<React.SetStateAction<number>>;
+  oldAgePensioner: number;
+  setOldAgePensioner: React.Dispatch<React.SetStateAction<number>>;
   // showCart: () => void;
 };

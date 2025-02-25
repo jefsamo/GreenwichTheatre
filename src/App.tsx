@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { NotFound } from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import Cart from "./pages/Cart/Cart";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,7 @@ function App() {
           <Route element={<AppLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/play/:playId" element={<Play />} />
+            <Route path="/cart" element={<Cart />} />
           </Route>
           <Route
             element={
