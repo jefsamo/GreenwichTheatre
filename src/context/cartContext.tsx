@@ -21,7 +21,7 @@ const initialState: InitialStateType = {
   clearCart: () => {},
   showAddToCart: false,
   setShowAddToCart: () => {},
-  //   showCart: () => {}, // ✅ Now it's a function
+  //   showCart: () => {},
 };
 
 const CartContext = createContext<InitialStateType>(initialState);
