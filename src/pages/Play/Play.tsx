@@ -37,9 +37,8 @@ const Play = () => {
   ];
 
   const { showAddToCart, setShowAddToCart, addToCart, cart } = useCartContext();
-  console.log(cart);
 
-  // const
+  const playExistInCart = cart.some((c) => c.play.id === play?.id);
 
   useEffect(() => {
     if (title) {
@@ -130,8 +129,13 @@ const Play = () => {
                     totalOldAgePensioner: oldAgePensioner,
                     play,
                   });
-                  console.log("clicked add to cart"); // ✅ Now it executes
+                  console.log("clicked add to cart");
                 }}
+                disabled={
+                  !playExistInCart
+                    ? !(adult || children || oldAgePensioner)
+                    : false
+                }
               >
                 Add to cart
               </Button>
