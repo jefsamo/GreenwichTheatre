@@ -12,12 +12,13 @@ import {
 } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { ReviewCard } from "../../components/ReviewCard/ReviewCard";
-import CustomerType from "../../components/CustomerType/CustomerType";
-import { IconArrowRight } from "@tabler/icons-react";
+import { IconArrowRight, IconShoppingBagCheck } from "@tabler/icons-react";
 import { useGetPlay } from "../../hooks/useGetPlay";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGetReviewsByPlayId } from "../../hooks/useGetReviewsByPlayId";
 import { PlayCardType, Review } from "../../types";
+import { useCartContext } from "../../context/cartContext";
+import Customer from "../../components/CustomerType/Customer";
 
 const Play = () => {
   const { playId } = useParams();
@@ -25,6 +26,20 @@ const Play = () => {
   const { reviews, isLoading: isReviewsLoading } = useGetReviewsByPlayId();
   const navigate = useNavigate();
   const title = play?.title;
+  const [adult, setAdult] = useState(0);
+  const [children, setChildren] = useState(0);
+  const [oldAgePensioner, setOldAgePensioner] = useState(0);
+
+  const customerType = [
+    { type: "Adult", value: adult, setValue: setAdult },
+    { type: "Children", value: children, setValue: setChildren },
+    { type: "OAP", value: oldAgePensioner, setValue: setOldAgePensioner },
+  ];
+
+  const { showAddToCart, setShowAddToCart, addToCart, cart } = useCartContext();
+  console.log(cart);
+
+  // const
 
   useEffect(() => {
     if (title) {
@@ -85,20 +100,53 @@ const Play = () => {
           <Text size="md">{description}</Text>
           <Space h="md" />
           <Group>
-            <Button size="md">Buy Ticket</Button>
+            <Button
+              size="md"
+              onClick={() => {
+                setShowAddToCart((showCart) => !showCart);
+              }}
+            >
+              Buy Ticket
+            </Button>
           </Group>
-          <CustomerType />
-          <CustomerType />
-          <CustomerType />
-          <Button
-            variant="light"
-            rightSection={<IconArrowRight size={14} />}
-            onClick={() => {
-              navigate("/reservation");
-            }}
-          >
-            Proceed
-          </Button>
+          {showAddToCart && (
+            <>
+              {customerType.map((customer, i) => {
+                return (
+                  <Customer
+                    key={i}
+                    customer={customer}
+                    setValue={customer.setValue}
+                  />
+                );
+              })}
+              <Button
+                variant="light"
+                rightSection={<IconShoppingBagCheck size={14} />}
+                onClick={() => {
+                  addToCart({
+                    totalAdult: adult,
+                    totalChildren: children,
+                    totalOldAgePensioner: oldAgePensioner,
+                    play,
+                  });
+                  console.log("clicked add to cart"); // ✅ Now it executes
+                }}
+              >
+                Add to cart
+              </Button>
+              <Space h="md" />
+              <Button
+                variant="light"
+                rightSection={<IconArrowRight size={14} />}
+                onClick={() => {
+                  navigate("/reservation");
+                }}
+              >
+                Proceed
+              </Button>
+            </>
+          )}
         </Grid.Col>
       </Grid>
     </div>
