@@ -1,15 +1,25 @@
-import { Center, Loader } from "@mantine/core";
+import { Center, Loader, Text } from "@mantine/core";
 import { PlayCard } from "../../components/PlayCard/PlayCard";
 import { useGetPlays } from "../../hooks/useGetPlays";
 import "./Home.css";
 
 const Home = () => {
-  const { plays = [], isLoading } = useGetPlays();
+  const { plays = [], isLoading, error } = useGetPlays();
   if (isLoading) {
     return (
       <Center h="100dvh">
         <Loader />
       </Center>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container">
+        <Text fz="lg" c="red" lineClamp={4}>
+          Can't connect to server right now!
+        </Text>
+      </div>
     );
   }
   return (
