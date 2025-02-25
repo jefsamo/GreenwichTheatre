@@ -9,7 +9,11 @@ export const useLogin = () => {
 
   const queryClient = useQueryClient();
 
-  const { mutate: login, isPending } = useMutation({
+  const {
+    mutate: login,
+    isPending,
+    error,
+  } = useMutation({
     mutationFn: async ({ email, password }: LoginType) => {
       const user = await loginApi({ email, password });
       localStorage.setItem("user", JSON.stringify(user));
@@ -22,9 +26,13 @@ export const useLogin = () => {
     },
     onError: (err) => {
       console.log("Error", err);
-      toast.error("Incorrect email or password");
+      if (err instanceof Error && err.message.includes("Network Error")) {
+        toast.error("Unable to connect to server!");
+      } else {
+        toast.error("Incorrect email or password");
+      }
     },
   });
 
-  return { login, isPending };
+  return { login, isPending, error };
 };

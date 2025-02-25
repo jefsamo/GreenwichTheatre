@@ -48,6 +48,29 @@ export type Review = {
   comment: string;
 };
 
+export type CustomerTypeProp = {
+  type: string;
+  value: number;
+  setValue: React.Dispatch<React.SetStateAction<number>>;
+};
+
 export type ReviewCardProp = {
   review: Review;
+};
+
+export type CartType = {
+  totalAdult: number;
+  totalChildren: number;
+  totalOldAgePensioner: number;
+  play: PlayCardType;
+};
+
+export type InitialStateType = {
+  cart: CartType[];
+  addToCart: (singleItem: CartType) => void;
+  clearCart: () => void;
+  totalAmount: number;
+  showAddToCart: boolean;
+  setShowAddToCart: React.Dispatch<React.SetStateAction<boolean>>;
+  // showCart: () => void;
 };

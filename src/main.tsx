@@ -5,11 +5,14 @@ import App from "./App.tsx";
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import { CartProvider } from "./context/cartContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <MantineProvider>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </MantineProvider>
   </StrictMode>
 );

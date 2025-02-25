@@ -1,14 +1,17 @@
-import { IconLogout } from "@tabler/icons-react";
-import { Box, Button, Group, Input } from "@mantine/core";
+import { IconLogout, IconShoppingBag } from "@tabler/icons-react";
+import { Badge, Box, Button, Group, Input } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../constants";
+import { useCartContext } from "../../context/cartContext";
 
 export function Header() {
   const navigate = useNavigate();
 
   const user = getCurrentUser();
+
+  const { cart } = useCartContext();
 
   return (
     <Box pb={50}>
@@ -60,6 +63,34 @@ export function Header() {
                   <IconLogout />
                 </Button>
               )}
+              <Link
+                to="/cart"
+                style={{ position: "relative", display: "inline-block" }}
+              >
+                <Button
+                  variant="default"
+                  color="blue"
+                  style={{ position: "relative" }}
+                >
+                  <IconShoppingBag size={20} />
+                  {
+                    <Badge
+                      color="transparent"
+                      size="lg"
+                      radius="xl"
+                      style={{
+                        position: "absolute",
+                        top: "-5px",
+                        right: "1px",
+                        color: "#000",
+                        // zIndex: -1,
+                      }}
+                    >
+                      {cart.length}
+                    </Badge>
+                  }
+                </Button>
+              </Link>
             </Group>
           </Group>
         </div>
