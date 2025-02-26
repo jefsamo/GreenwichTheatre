@@ -63,6 +63,7 @@ export type CartType = {
   totalChildren: number;
   totalOldAgePensioner: number;
   play: PlayCardType;
+  totalPrice: number;
 };
 
 export type InitialStateType = {

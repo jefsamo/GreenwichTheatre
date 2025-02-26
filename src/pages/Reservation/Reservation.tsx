@@ -4,6 +4,7 @@ import { useState } from "react";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useCartContext } from "../../context/cartContext";
 import { calculateYear } from "../../constants";
+import { CartType } from "../../types";
 
 const Reservation = () => {
   const { cart, clearCart } = useCartContext();
@@ -12,6 +13,12 @@ const Reservation = () => {
     { name: "Area B", rows: 3, seatsPerRow: 8 },
     { name: "Area C", rows: 2, seatsPerRow: 10 },
   ];
+
+  const totalPrices = cart.reduce((acc: number, cur: CartType) => {
+    return acc + cur.totalPrice;
+  }, 0);
+
+  console.log(totalPrices);
 
   const maxAgeForChild = 12;
   const maxAgeForAdult = 60;
@@ -39,7 +46,7 @@ const Reservation = () => {
           {Array.from({ length: cart?.length }).map((_, index) => (
             <div key={index}>
               <Text size="lg" fw="500" c="violet">
-                Play {index + 1}
+                {cart[index]?.play?.title}
               </Text>
               {/* Adult */}
               {Array.from({ length: cart[index].totalAdult }).map(
@@ -244,6 +251,11 @@ const Reservation = () => {
           ))}
         </Grid.Col>
       </Grid>
+      {cart && cart.length > 0 && (
+        <Text size="lg" ml="xs">
+          Total price: {totalPrices.toFixed(2)}
+        </Text>
+      )}
       <Center>
         <Button rightSection={<IconArrowRight size={14} />}>
           Make payment
