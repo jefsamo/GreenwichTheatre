@@ -5,10 +5,14 @@ import { useParams } from "react-router-dom";
 export const useGetPlay = () => {
   const { playId } = useParams();
 
-  const { isLoading, data: play } = useQuery({
+  const {
+    isLoading,
+    data: play,
+    error,
+  } = useQuery({
     queryKey: [`play/${playId}`],
     queryFn: () => getPlay(playId!),
   });
 
-  return { isLoading, play };
+  return { isLoading, play, error };
 };

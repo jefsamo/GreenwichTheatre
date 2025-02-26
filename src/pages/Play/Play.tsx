@@ -22,7 +22,7 @@ import Customer from "../../components/CustomerType/Customer";
 
 const Play = () => {
   const { playId } = useParams();
-  const { play, isLoading } = useGetPlay();
+  const { play, isLoading, error } = useGetPlay();
   const { reviews, isLoading: isReviewsLoading } = useGetReviewsByPlayId();
   const navigate = useNavigate();
   const title = play?.title;
@@ -41,8 +41,6 @@ const Play = () => {
     // oldAgePensioner,
     // setOldAgePensioner,
   } = useCartContext();
-  console.log(cart);
-
   const customerType = [
     { type: "Adult", value: adult, setValue: setAdult },
     { type: "Children", value: children, setValue: setChildren },
@@ -62,6 +60,16 @@ const Play = () => {
       <Center h="100dvh">
         <Loader />
       </Center>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container">
+        <Text fz="lg" c="red" lineClamp={4}>
+          Can't connect to server right now!
+        </Text>
+      </div>
     );
   }
   // 25% for oap and chidlren discount = 0.25

@@ -81,3 +81,23 @@ export type InitialStateType = {
   setOldAgePensioner: React.Dispatch<React.SetStateAction<number>>;
   // showCart: () => void;
 };
+
+export type TicketType = {
+  firstName: string;
+  lastName: string;
+  playId: string;
+  seatId: string;
+  dateOfBirth: Date;
+};
+
+export type Reservation = {
+  createReservationDto: ReservationType;
+};
+
+export type ReservationType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  totalPrice: number;
+  tickets: TicketType[];
+};
