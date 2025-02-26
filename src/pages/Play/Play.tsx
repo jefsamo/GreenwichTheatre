@@ -64,31 +64,41 @@ const Play = () => {
       </Center>
     );
   }
-  // 25% for discount = 0.25
-  const childrenAndOapDiscount = 0.25;
+  // 25% for oap and chidlren discount = 0.25
+  const twentyFivePercentDiscount = 0.25;
   const { description, mainImageUrl, price, timeOfPlay } = play as PlayCardType;
   const adultPrice = price;
-  const childrenAndOapPrice = price - price * childrenAndOapDiscount;
+  const childrenAndOapPrice = price - price * twentyFivePercentDiscount;
 
   const totalPrice =
     adult * adultPrice +
     children * childrenAndOapPrice +
-    oldAgePensioner * childrenAndOapDiscount;
+    oldAgePensioner * twentyFivePercentDiscount;
 
   const scheduledEvent = new Date(timeOfPlay);
+  const eventDay = scheduledEvent.getDay();
+
   const oneHourMilliseconds = 60 * 60 * 1000;
   const currentTime = new Date();
   const oneHourBeforeEvent = new Date(
     scheduledEvent.getTime() - oneHourMilliseconds
   );
 
-  const lessThanOneHourDiscount = 0.1;
+  const tenPercentDiscount = 0.1;
   const isLessThanOneHourBeforeEvent =
     currentTime >= oneHourBeforeEvent && currentTime < scheduledEvent;
 
+  // Checks if play is starting in an hour time for 10% discount
   const calculateTotalPriceAfterTimeDiscount = !isLessThanOneHourBeforeEvent
     ? totalPrice
-    : totalPrice - totalPrice * lessThanOneHourDiscount;
+    : totalPrice - totalPrice * tenPercentDiscount;
+
+  // Checks if play is within Monday - Thursday to get 10% discount
+  const isMondayToThursday = eventDay >= 1 && eventDay <= 4;
+  const eventMondayThursdayPrice = isMondayToThursday
+    ? calculateTotalPriceAfterTimeDiscount -
+      calculateTotalPriceAfterTimeDiscount * tenPercentDiscount
+    : calculateTotalPriceAfterTimeDiscount;
 
   return (
     <div className="container">
@@ -137,7 +147,7 @@ const Play = () => {
             OAPs & Children Price: {childrenAndOapPrice.toFixed(2)}
           </Text>
           <Text size="md">
-            Total price: {calculateTotalPriceAfterTimeDiscount.toFixed(2)}
+            Total price: {eventMondayThursdayPrice.toFixed(2)}
           </Text>
           <Space h="md" />
           <Group>
@@ -170,7 +180,7 @@ const Play = () => {
                     totalChildren: children,
                     totalOldAgePensioner: oldAgePensioner,
                     play,
-                    totalPrice,
+                    totalPrice: eventMondayThursdayPrice,
                   });
                 }}
                 disabled={
