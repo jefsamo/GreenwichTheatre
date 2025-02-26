@@ -41,6 +41,7 @@ const Play = () => {
     // oldAgePensioner,
     // setOldAgePensioner,
   } = useCartContext();
+  console.log(cart);
 
   const customerType = [
     { type: "Adult", value: adult, setValue: setAdult },
@@ -63,7 +64,31 @@ const Play = () => {
       </Center>
     );
   }
-  const { description, mainImageUrl } = play as PlayCardType;
+  // 25% for discount = 0.25
+  const childrenAndOapDiscount = 0.25;
+  const { description, mainImageUrl, price, timeOfPlay } = play as PlayCardType;
+  const adultPrice = price;
+  const childrenAndOapPrice = price - price * childrenAndOapDiscount;
+
+  const totalPrice =
+    adult * adultPrice +
+    children * childrenAndOapPrice +
+    oldAgePensioner * childrenAndOapDiscount;
+
+  const scheduledEvent = new Date(timeOfPlay);
+  const oneHourMilliseconds = 60 * 60 * 1000;
+  const currentTime = new Date();
+  const oneHourBeforeEvent = new Date(
+    scheduledEvent.getTime() - oneHourMilliseconds
+  );
+
+  const lessThanOneHourDiscount = 0.1;
+  const isLessThanOneHourBeforeEvent =
+    currentTime >= oneHourBeforeEvent && currentTime < scheduledEvent;
+
+  const calculateTotalPriceAfterTimeDiscount = !isLessThanOneHourBeforeEvent
+    ? totalPrice
+    : totalPrice - totalPrice * lessThanOneHourDiscount;
 
   return (
     <div className="container">
@@ -107,6 +132,13 @@ const Play = () => {
           </Text>
           <Space h="md" />
           <Text size="md">{description}</Text>
+          <Text size="md">Price: {price}</Text>
+          <Text size="md">
+            OAPs & Children Price: {childrenAndOapPrice.toFixed(2)}
+          </Text>
+          <Text size="md">
+            Total price: {calculateTotalPriceAfterTimeDiscount.toFixed(2)}
+          </Text>
           <Space h="md" />
           <Group>
             <Button
@@ -138,6 +170,7 @@ const Play = () => {
                     totalChildren: children,
                     totalOldAgePensioner: oldAgePensioner,
                     play,
+                    totalPrice,
                   });
                 }}
                 disabled={

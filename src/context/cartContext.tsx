@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { CartType, InitialStateType } from "../types";
-import reducer from "../reducers/cartReducers";
+import reducer from "../reducers/cartReducer";
 import { getLocalStorageCart } from "../constants";
 
 type CartProviderProp = {
@@ -52,10 +52,17 @@ export const CartProvider = ({ children }: CartProviderProp) => {
     totalChildren,
     totalOldAgePensioner,
     play,
+    totalPrice,
   }: CartType) => {
     dispatch({
       type: "ADD_TO_CART",
-      payload: { totalAdult, totalChildren, totalOldAgePensioner, play },
+      payload: {
+        totalAdult,
+        totalChildren,
+        totalOldAgePensioner,
+        play,
+        totalPrice,
+      },
     });
   };
 

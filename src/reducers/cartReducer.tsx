@@ -11,14 +11,20 @@ const cartReducer = (state: InitialStateType, action: Action) => {
   }
 
   if (action.type === "ADD_TO_CART") {
-    const { totalAdult, totalChildren, totalOldAgePensioner, play } =
-      action.payload as CartType;
+    const {
+      totalAdult,
+      totalChildren,
+      totalOldAgePensioner,
+      play,
+      totalPrice,
+    } = action.payload as CartType;
 
     const newItem: CartType = {
       totalAdult,
       totalChildren,
       totalOldAgePensioner,
       play,
+      totalPrice,
     };
 
     return { ...state, cart: [...state.cart, newItem] };
