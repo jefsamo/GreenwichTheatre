@@ -46,6 +46,7 @@ export type Response = {
 export type Review = {
   rating: number;
   comment: string;
+  playId?: string;
 };
 
 export type CustomerTypeProp = {
@@ -80,4 +81,24 @@ export type InitialStateType = {
   oldAgePensioner: number;
   setOldAgePensioner: React.Dispatch<React.SetStateAction<number>>;
   // showCart: () => void;
+};
+
+export type TicketType = {
+  firstName: string;
+  lastName: string;
+  playId: string;
+  seatId: string;
+  dateOfBirth: Date;
+};
+
+export type Reservation = {
+  createReservationDto: ReservationType;
+};
+
+export type ReservationType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  totalPrice: number;
+  tickets: TicketType[];
 };

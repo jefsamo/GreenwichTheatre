@@ -3,11 +3,13 @@ import { DateInput } from "@mantine/dates";
 import { useState } from "react";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useCartContext } from "../../context/cartContext";
-import { calculateYear } from "../../constants";
-import { CartType } from "../../types";
+import { calculateYear, getCurrentUser } from "../../constants";
+import { CartType, ReservationType } from "../../types";
+import { useReservation } from "../../hooks/useReservation";
 
 const Reservation = () => {
   const { cart, clearCart } = useCartContext();
+  const { isPending, reservation } = useReservation();
   const sections = [
     { name: "Area A", rows: 2, seatsPerRow: 6 },
     { name: "Area B", rows: 3, seatsPerRow: 8 },
@@ -18,9 +20,7 @@ const Reservation = () => {
     return acc + cur.totalPrice;
   }, 0);
 
-  console.log(totalPrices);
-
-  const maxAgeForChild = 12;
+  const maxAgeForChild = 11;
   const maxAgeForAdult = 60;
 
   // const startAgeForOAP = 61;
@@ -35,6 +35,77 @@ const Reservation = () => {
 
   const handleChange = (key: string, newValue: string | Date | null) => {
     setValues((prev) => ({ ...prev, [key]: newValue }));
+  };
+  const user = getCurrentUser();
+
+  const formatDate = (date: any) => {
+    if (!date) return null; // Handle empty/null values
+    // if (typeof date === "string") return date; // If already in "YYYY-MM-DD" format, return as is
+    if (date instanceof Date) return date.toISOString().split("T")[0]; // Convert Date object
+    return null;
+  };
+  const token = user.token;
+
+  const handleReservation = () => {
+    const requestData = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      tickets: cart.flatMap((cartItem, index) => {
+        const allTickets = [];
+
+        // Process Adults
+        for (
+          let adultIndex = 0;
+          adultIndex < cartItem.totalAdult;
+          adultIndex++
+        ) {
+          allTickets.push({
+            playId: cartItem.play.id,
+            seatId: "47613868-64af-49de-93d2-5a1e163465db", // Assuming you store seat IDs
+            firstName: values[`${index}-adult-${adultIndex}-firstName`] || "",
+            lastName: values[`${index}-adult-${adultIndex}-lastName`] || "",
+            dateOfBirth: formatDate(values[`${index}-adult-${adultIndex}-dob`]),
+          });
+        }
+
+        // Process Children
+        for (
+          let childIndex = 0;
+          childIndex < cartItem.totalChildren;
+          childIndex++
+        ) {
+          allTickets.push({
+            playId: cartItem.play.id,
+            seatId: "c55e447f-1fb2-4fdf-bd49-5376ee4d0732", // Assuming you store seat IDs
+            firstName: values[`${index}-child-${childIndex}-firstName`] || "",
+            lastName: values[`${index}-child-${childIndex}-lastName`] || "",
+            dateOfBirth: values[`${index}-child-${childIndex}-dob`],
+          });
+        }
+
+        // Process OAP (Old Age Pensioners)
+        for (
+          let oapIndex = 0;
+          oapIndex < cartItem.totalOldAgePensioner;
+          oapIndex++
+        ) {
+          allTickets.push({
+            playId: cartItem.play.id,
+            seatId: "d87963ec-d4e7-4945-81e8-81a54e86baee", // Assuming you store seat IDs
+            firstName: values[`${index}-oap-${oapIndex}-firstName`] || "",
+            lastName: values[`${index}-oap-${oapIndex}-lastName`] || "",
+            dateOfBirth:
+              formatDate(values[`${index}-oap-${oapIndex}-dob`]) || "",
+          });
+        }
+
+        return allTickets;
+      }),
+      totalPrice: totalPrices,
+    } as ReservationType;
+    console.log(requestData);
+    reservation({ reservation: requestData, token });
   };
   return (
     <div className="container">
@@ -257,8 +328,14 @@ const Reservation = () => {
         </Text>
       )}
       <Center>
-        <Button rightSection={<IconArrowRight size={14} />}>
-          Make payment
+        <Button
+          rightSection={<IconArrowRight size={14} />}
+          loading={isPending}
+          onClick={() => {
+            handleReservation();
+          }}
+        >
+          Make reservation
         </Button>
 
         <Button

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getReviewsByPlayId } from "../services/apiPlays";
 import { useParams } from "react-router-dom";
+import { getReviewsByPlayId } from "../services/apiReviews";
 
 export const useGetReviewsByPlayId = () => {
   const { playId } = useParams();
