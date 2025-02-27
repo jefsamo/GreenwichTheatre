@@ -84,11 +84,11 @@ export type InitialStateType = {
 };
 
 export type TicketType = {
-  firstName: string;
-  lastName: string;
+  firstName: string | Date;
+  lastName: string | Date;
   playId: string;
   seatId: string;
-  dateOfBirth: Date;
+  dateOfBirth: string | Date;
 };
 
 export type Reservation = {

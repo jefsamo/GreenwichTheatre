@@ -1,10 +1,10 @@
 import { Button, Center, Grid, Space, Text, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useCartContext } from "../../context/cartContext";
 import { calculateYear, getCurrentUser } from "../../constants";
-import { CartType, ReservationType } from "../../types";
+import { ReservationType } from "../../types";
 import { useReservation } from "../../hooks/useReservation";
 
 const Reservation = () => {
@@ -16,9 +16,10 @@ const Reservation = () => {
     { name: "Area C", rows: 2, seatsPerRow: 10 },
   ];
 
-  const totalPrices = cart.reduce((acc: number, cur: CartType) => {
-    return acc + cur.totalPrice;
-  }, 0);
+  const totalPrices = useMemo(
+    () => cart.reduce((acc, cur) => acc + cur.totalPrice, 0),
+    [cart]
+  );
 
   const maxAgeForChild = 11;
   const maxAgeForAdult = 60;
@@ -29,83 +30,74 @@ const Reservation = () => {
   const maxDateForAdult = calculateYear(maxAgeForChild);
   const leastDateForOAP = calculateYear(maxAgeForAdult);
 
-  const [values, setValues] = useState<Record<string, string | Date | null>>(
+  const [values, setValues] = useState<{ [key: string]: string | Date | null }>(
     {}
   );
 
   const handleChange = (key: string, newValue: string | Date | null) => {
-    setValues((prev) => ({ ...prev, [key]: newValue }));
+    setValues((prev) => {
+      if (prev[key] === newValue) return prev; // Prevent unnecessary state updates
+      return { ...prev, [key]: newValue };
+    });
   };
   const user = getCurrentUser();
 
-  const formatDate = (date: any) => {
-    if (!date) return null; // Handle empty/null values
-    // if (typeof date === "string") return date; // If already in "YYYY-MM-DD" format, return as is
-    if (date instanceof Date) return date.toISOString().split("T")[0]; // Convert Date object
+  const formatDate = (date: unknown): string | null => {
+    if (!date) return null;
+    if (date instanceof Date) return date.toISOString().split("T")[0];
+    if (typeof date === "string") return date;
     return null;
   };
+
   const token = user.token;
 
   const handleReservation = () => {
-    const requestData = {
+    const requestData: ReservationType = {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      tickets: cart.flatMap((cartItem, index) => {
-        const allTickets = [];
+      tickets: cart
+        .map((cartItem, index) => {
+          const generateTickets = (
+            category: "adult" | "child" | "oap",
+            count: number,
+            seatId: string
+          ) => {
+            return Array.from({ length: count }, (_, i) => ({
+              playId: cartItem.play.id,
+              seatId,
+              firstName: values[`${index}-${category}-${i}-firstName`] || "",
+              lastName: values[`${index}-${category}-${i}-lastName`] || "",
+              dateOfBirth:
+                formatDate(values[`${index}-${category}-${i}-dob`]) || "",
+            }));
+          };
 
-        // Process Adults
-        for (
-          let adultIndex = 0;
-          adultIndex < cartItem.totalAdult;
-          adultIndex++
-        ) {
-          allTickets.push({
-            playId: cartItem.play.id,
-            seatId: "47613868-64af-49de-93d2-5a1e163465db", // Assuming you store seat IDs
-            firstName: values[`${index}-adult-${adultIndex}-firstName`] || "",
-            lastName: values[`${index}-adult-${adultIndex}-lastName`] || "",
-            dateOfBirth: formatDate(values[`${index}-adult-${adultIndex}-dob`]),
-          });
-        }
-
-        // Process Children
-        for (
-          let childIndex = 0;
-          childIndex < cartItem.totalChildren;
-          childIndex++
-        ) {
-          allTickets.push({
-            playId: cartItem.play.id,
-            seatId: "c55e447f-1fb2-4fdf-bd49-5376ee4d0732", // Assuming you store seat IDs
-            firstName: values[`${index}-child-${childIndex}-firstName`] || "",
-            lastName: values[`${index}-child-${childIndex}-lastName`] || "",
-            dateOfBirth: values[`${index}-child-${childIndex}-dob`],
-          });
-        }
-
-        // Process OAP (Old Age Pensioners)
-        for (
-          let oapIndex = 0;
-          oapIndex < cartItem.totalOldAgePensioner;
-          oapIndex++
-        ) {
-          allTickets.push({
-            playId: cartItem.play.id,
-            seatId: "d87963ec-d4e7-4945-81e8-81a54e86baee", // Assuming you store seat IDs
-            firstName: values[`${index}-oap-${oapIndex}-firstName`] || "",
-            lastName: values[`${index}-oap-${oapIndex}-lastName`] || "",
-            dateOfBirth:
-              formatDate(values[`${index}-oap-${oapIndex}-dob`]) || "",
-          });
-        }
-
-        return allTickets;
-      }),
+          return [
+            ...generateTickets(
+              "adult",
+              cartItem.totalAdult,
+              "252a4c14-429d-4526-9638-ff0586b53727"
+            ),
+            ...generateTickets(
+              "child",
+              cartItem.totalChildren,
+              "abd840bc-9b47-48fb-96ec-19455c0ff85d"
+            ),
+            ...generateTickets(
+              "oap",
+              cartItem.totalOldAgePensioner,
+              "d87963ec-d4e7-4945-81e8-81a54e86baee"
+            ),
+          ];
+        })
+        .flat(), // Flatten the array after mapping
       totalPrice: totalPrices,
-    } as ReservationType;
+    };
+
     reservation({ reservation: requestData, token });
   };
+
   return (
     <div className="container">
       <Grid gutter="md">
