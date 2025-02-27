@@ -27,35 +27,31 @@ const initialState: InitialPlayStateType = {
 const PlayContext = createContext<InitialPlayStateType>(initialState);
 
 export const PlayProvider = ({ children }: PlayProviderProp) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  //   const [searchTerm, setSearchTerm] = useState("");
+  const [state] = useReducer(reducer, initialState);
+  const [searchTerm, setSearchTerm] = useState("");
   const { plays: playApi, isLoading, error } = useGetPlays();
-  console.log(playApi);
   const [plays, setPlays] = useState<PlayCardType[]>(playApi);
 
   useEffect(() => {
-    if (playApi && playApi.length > 0) {
-      dispatch({ type: "FETCH_PLAYS", payload: playApi });
+    if (!searchTerm) {
+      setPlays(playApi);
+      return;
     }
-  }, [playApi]);
 
-  const setSearchTerm = (searchTerm: string) => {
-    dispatch({ type: "SET_SEARCH_TERM", payload: searchTerm });
-  };
-
-  const filterPlays = () => {
-    dispatch({ type: "FILTER_PLAYS" });
-  };
+    const filteredPlays = playApi.filter((play: PlayCardType) =>
+      play.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setPlays(filteredPlays);
+  }, [playApi, searchTerm]);
 
   return (
     <PlayContext.Provider
       value={{
         ...state,
-        // searchTerm,
+        searchTerm,
         setSearchTerm,
         plays,
         setPlays,
-        filterPlays,
         isLoading,
         error,
       }}

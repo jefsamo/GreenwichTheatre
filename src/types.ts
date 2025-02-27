@@ -108,7 +108,8 @@ export type InitialPlayStateType = {
   setPlays: React.Dispatch<React.SetStateAction<PlayCardType[]>>;
   // setPlays: (plays: PlayCardType[]) => void;
   searchTerm: string;
-  setSearchTerm: (search: string) => void;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  // setShowAddToCart: React.Dispatch<React.SetStateAction<boolean>>;
   filterPlays: () => void;
   isLoading: boolean;
   error: Error | null;

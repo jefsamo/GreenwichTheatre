@@ -1,16 +1,12 @@
 import { Center, Loader, Text } from "@mantine/core";
 import { PlayCard } from "../../components/PlayCard/PlayCard";
-// import { useGetPlays } from "../../hooks/useGetPlays";
 import "./Home.css";
-// import { usePlayContext } from "../../context/playContext";
-import { useGetPlays } from "../../hooks/useGetPlays";
+import { PlayCardType } from "../../types";
+import { usePlayContext } from "../../context/playContext";
 
 const Home = () => {
-  const { plays = [], isLoading, error } = useGetPlays();
-  // let filtredPlays = [];
+  const { plays = [], isLoading, error } = usePlayContext();
 
-  // const { plays = [], isLoading, error } = usePlayContext();
-  // console.log(plays);
   if (isLoading) {
     return (
       <Center h="100dvh">
@@ -32,9 +28,10 @@ const Home = () => {
     <div>
       <div className="container">
         <div className="my-card">
-          {plays?.map((play: any, i: number) => {
-            return <PlayCard key={i} play={play} />;
+          {plays?.map((play: PlayCardType) => {
+            return <PlayCard key={play.id} play={play} />;
           })}
+          {/* {renderedPlays} */}
         </div>
       </div>
     </div>

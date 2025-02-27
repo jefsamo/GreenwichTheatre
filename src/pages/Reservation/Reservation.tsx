@@ -104,7 +104,6 @@ const Reservation = () => {
       }),
       totalPrice: totalPrices,
     } as ReservationType;
-    console.log(requestData);
     reservation({ reservation: requestData, token });
   };
   return (

@@ -13,10 +13,6 @@ const playReducer = (state: InitialPlayStateType, action: Action) => {
     return { ...state, plays: action.payload };
   }
   if (action.type === "FILTER_PLAYS") {
-    // const { plays, searchTerm } = action.payload;
-    // const filteredPlays = plays.filter((play: PlayCardType) =>
-    //   play.title.toLowerCase().includes(searchTerm.toLowerCase())
-    // );
     return {
       ...state,
       plays: state.plays.filter((play) =>
