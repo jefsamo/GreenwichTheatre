@@ -27,7 +27,6 @@ const initialState: InitialStateType = {
   setChildrens: () => {},
   oldAgePensioner: 0,
   setOldAgePensioner: () => {},
-  //   showCart: () => {},
 };
 
 const CartContext = createContext<InitialStateType>(initialState);

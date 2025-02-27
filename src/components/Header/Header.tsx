@@ -9,11 +9,10 @@ import { usePlayContext } from "../../context/playContext";
 
 export function Header() {
   const navigate = useNavigate();
-  const { searchTerm, setSearchTerm, filterPlays } = usePlayContext();
+  const { searchTerm, setSearchTerm } = usePlayContext();
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    filterPlays(); // Automatically filters plays based on input
   };
 
   const user = getCurrentUser();
