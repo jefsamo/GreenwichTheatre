@@ -1,4 +1,4 @@
-import { scan } from "react-scan"; // must be imported before React and React DOM
+// import { scan } from "react-scan"; // must be imported before React and React DOM
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -10,9 +10,9 @@ import { CartProvider } from "./context/cartContext.tsx";
 import { PlayProvider } from "./context/playContext.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-scan({
-  enabled: true,
-});
+// scan({
+//   enabled: true,
+// });
 
 const queryClient = new QueryClient({
   defaultOptions: {

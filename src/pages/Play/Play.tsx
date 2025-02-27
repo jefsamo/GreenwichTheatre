@@ -82,7 +82,7 @@ const Play = () => {
   const totalPrice =
     adult * adultPrice +
     children * childrenAndOapPrice +
-    oldAgePensioner * twentyFivePercentDiscount;
+    oldAgePensioner * childrenAndOapPrice;
 
   const scheduledEvent = new Date(timeOfPlay);
   const eventDay = scheduledEvent.getDay();

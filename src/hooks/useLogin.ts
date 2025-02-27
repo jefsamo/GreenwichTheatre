@@ -16,13 +16,25 @@ export const useLogin = () => {
   } = useMutation({
     mutationFn: async ({ email, password }: LoginType) => {
       const user = await loginApi({ email, password });
-      localStorage.setItem("user", JSON.stringify(user));
+      const expirationTime = Date.now() + 10 * 60 * 1000;
+      localStorage.setItem("user", JSON.stringify({ ...user, expirationTime }));
       return user;
     },
     onSuccess: (user: unknown) => {
       queryClient.setQueryData(["user"], user as UserType);
       toast.success("Login successful");
       navigate("/", { replace: true });
+      setTimeout(() => {
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+        if (
+          storedUser.expirationTime &&
+          Date.now() >= storedUser.expirationTime
+        ) {
+          localStorage.removeItem("user");
+          window.location.reload();
+          toast.dismiss("Session expired. Please log in again.");
+        }
+      }, 10 * 60 * 1000);
     },
     onError: (err) => {
       console.log("Error", err);
