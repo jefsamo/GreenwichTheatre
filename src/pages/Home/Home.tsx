@@ -1,10 +1,16 @@
 import { Center, Loader, Text } from "@mantine/core";
 import { PlayCard } from "../../components/PlayCard/PlayCard";
-import { useGetPlays } from "../../hooks/useGetPlays";
+// import { useGetPlays } from "../../hooks/useGetPlays";
 import "./Home.css";
+// import { usePlayContext } from "../../context/playContext";
+import { useGetPlays } from "../../hooks/useGetPlays";
 
 const Home = () => {
   const { plays = [], isLoading, error } = useGetPlays();
+  // let filtredPlays = [];
+
+  // const { plays = [], isLoading, error } = usePlayContext();
+  // console.log(plays);
   if (isLoading) {
     return (
       <Center h="100dvh">

@@ -102,3 +102,14 @@ export type ReservationType = {
   totalPrice: number;
   tickets: TicketType[];
 };
+
+export type InitialPlayStateType = {
+  plays: PlayCardType[];
+  setPlays: React.Dispatch<React.SetStateAction<PlayCardType[]>>;
+  // setPlays: (plays: PlayCardType[]) => void;
+  searchTerm: string;
+  setSearchTerm: (search: string) => void;
+  filterPlays: () => void;
+  isLoading: boolean;
+  error: Error | null;
+};

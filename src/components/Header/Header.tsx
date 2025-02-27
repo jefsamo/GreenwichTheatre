@@ -5,9 +5,16 @@ import classes from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../constants";
 import { useCartContext } from "../../context/cartContext";
+import { usePlayContext } from "../../context/playContext";
 
 export function Header() {
   const navigate = useNavigate();
+  const { searchTerm, setSearchTerm, filterPlays } = usePlayContext();
+
+  const handleSearch = (e: any) => {
+    setSearchTerm(e.target.value);
+    filterPlays(); // Automatically filters plays based on input
+  };
 
   const user = getCurrentUser();
 
@@ -22,7 +29,12 @@ export function Header() {
               <MantineLogo size={30} />
             </Link>
 
-            <Input placeholder="Search play..." w={"40%"} />
+            <Input
+              placeholder="Search play..."
+              w={"40%"}
+              value={searchTerm}
+              onChange={handleSearch}
+            />
 
             <Group visibleFrom="sm">
               {!user && (
