@@ -46,6 +46,7 @@ export type Response = {
 export type Review = {
   rating: number;
   comment: string;
+  playId?: string;
 };
 
 export type CustomerTypeProp = {

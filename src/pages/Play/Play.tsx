@@ -6,9 +6,11 @@ import {
   Group,
   Image,
   Loader,
+  Rating,
   Skeleton,
   Space,
   Text,
+  Textarea,
 } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { ReviewCard } from "../../components/ReviewCard/ReviewCard";
@@ -19,28 +21,27 @@ import { useGetReviewsByPlayId } from "../../hooks/useGetReviewsByPlayId";
 import { PlayCardType, Review } from "../../types";
 import { useCartContext } from "../../context/cartContext";
 import Customer from "../../components/CustomerType/Customer";
+import { getCurrentUser } from "../../constants";
+import { useReview } from "../../hooks/useReview";
 
 const Play = () => {
+  const navigate = useNavigate();
   const { playId } = useParams();
   const { play, isLoading, error } = useGetPlay();
+  const { writeReview, isPending } = useReview();
   const { reviews, isLoading: isReviewsLoading } = useGetReviewsByPlayId();
-  const navigate = useNavigate();
-  const title = play?.title;
+
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
   const [adult, setAdult] = useState(0);
   const [children, setChildren] = useState(0);
   const [oldAgePensioner, setOldAgePensioner] = useState(0);
-  const {
-    showAddToCart,
-    setShowAddToCart,
-    addToCart,
-    cart,
-    // adult,
-    // setAdult,
-    // childrens,
-    // setChildrens,
-    // oldAgePensioner,
-    // setOldAgePensioner,
-  } = useCartContext();
+  const { showAddToCart, setShowAddToCart, addToCart, cart } = useCartContext();
+  const title = play?.title;
+  const user = getCurrentUser();
+
+  const isOperator = user?.role === "Operator";
+
   const customerType = [
     { type: "Adult", value: adult, setValue: setAdult },
     { type: "Children", value: children, setValue: setChildren },
@@ -108,6 +109,14 @@ const Play = () => {
       calculateTotalPriceAfterTimeDiscount * tenPercentDiscount
     : calculateTotalPriceAfterTimeDiscount;
 
+  const review: Review = {
+    comment,
+    rating,
+    playId,
+  };
+  const handleReview = () => {
+    writeReview({ review, token: user.token });
+  };
   return (
     <div className="container">
       <Grid gutter="xl">
@@ -142,6 +151,32 @@ const Play = () => {
 
           {reviews && reviews?.length === 0 && (
             <Text size="md">No reviews for this play</Text>
+          )}
+
+          {!isOperator && (
+            <>
+              <Text size="lg" fw={700}>
+                Write Review
+              </Text>
+              <Rating defaultValue={1} value={rating} onChange={setRating} />
+
+              <Space h="md" />
+              <Textarea
+                placeholder="Write a review..."
+                value={comment}
+                onChange={(event) => setComment(event.currentTarget.value)}
+              />
+              <Space h="md" />
+              <Button
+                variant="light"
+                loading={isPending}
+                onClick={() => {
+                  handleReview();
+                }}
+              >
+                Submit
+              </Button>
+            </>
           )}
         </Grid.Col>
         <Grid.Col span={6}>
