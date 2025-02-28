@@ -120,3 +120,13 @@ export type Seat = {
   seatNumber: string;
   price: number;
 };
+
+export type Ticket = {
+  reservationId: string;
+  playId: string;
+  seatId: string;
+  firstName: string;
+  lastName: string;
+  hasCheckedIn: boolean;
+  dateOfBirth: Date;
+};
