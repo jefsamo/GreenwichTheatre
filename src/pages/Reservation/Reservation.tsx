@@ -4,34 +4,35 @@ import { useMemo, useState } from "react";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useCartContext } from "../../context/cartContext";
 import { calculateYear, filterSeat, getCurrentUser } from "../../constants";
-import { ReservationType, Seat } from "../../types";
+import { ReservationType, Seat, Ticket } from "../../types";
 import { useReservation } from "../../hooks/useReservation";
 import { useGetSeats } from "../../hooks/useGetSeats";
 import toast from "react-hot-toast";
+import { useGetTickets } from "../../hooks/useGetTickets";
+import { useNavigate } from "react-router-dom";
 
 const Reservation = () => {
   const { cart, clearCart } = useCartContext();
+  const navigate = useNavigate();
+
+  const playId = cart?.[0]?.play?.id;
   const { isPending, reservation } = useReservation();
+  const { tickets } = useGetTickets();
+
+  const bookedSeats = tickets
+    ?.filter((ticket: Ticket) => ticket.playId === playId)
+    ?.map((ticket: Ticket) => ticket.seatId);
+
+  const bookedSeatIds = new Set(bookedSeats);
   const { seats } = useGetSeats();
   const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
 
-  const handleSeatSelection = (seat: Seat) => {
-    setSelectedSeats((prev) => {
-      if (prev.some((s) => s.seatNumber === seat.seatNumber)) {
-        // Deselect seat
-        return prev.filter((s) => s.seatNumber !== seat.seatNumber);
-      }
-      if (prev.length < totalSeat) {
-        // Select seat if limit not exceeded
-        return [...prev, seat];
-      }
-      return prev; // Prevent selecting beyond the total seat count
-    });
-  };
+  //#region totalSeatPrice
   const totalSeatPrice = useMemo(() => {
     return selectedSeats.reduce((total, seat) => total + seat.price, 0);
   }, [selectedSeats]);
-  console.log(totalSeatPrice);
+  //#endregion
+
   const totalSeat =
     cart &&
     cart?.[0]?.totalAdult +
@@ -42,7 +43,6 @@ const Reservation = () => {
   const seatsB = filterSeat(seats, "B");
   const seatsC = filterSeat(seats, "C");
 
-  // console.log(seatsA);
   const sections = [
     {
       name: "Area A",
@@ -73,7 +73,6 @@ const Reservation = () => {
   );
 
   const totalPriceAndSeat = totalPrices + totalSeatPrice;
-  console.log(totalPriceAndSeat);
 
   const maxAgeForChild = 11;
   const maxAgeForAdult = 60;
@@ -94,17 +93,33 @@ const Reservation = () => {
       return { ...prev, [key]: newValue };
     });
   };
-  const user = getCurrentUser();
-
+  //#region formatDate
   const formatDate = (date: unknown): string | null => {
     if (!date) return null;
     if (date instanceof Date) return date.toISOString().split("T")[0];
     if (typeof date === "string") return date;
     return null;
   };
-
+  //#endregion
+  const user = getCurrentUser();
   const token = user?.token;
 
+  //#region handleSeatSelection
+  const handleSeatSelection = (seat: Seat) => {
+    setSelectedSeats((prev) => {
+      if (prev.some((s) => s.seatNumber === seat.seatNumber)) {
+        // Deselect seat
+        return prev.filter((s) => s.seatNumber !== seat.seatNumber);
+      }
+      if (prev.length < totalSeat) {
+        return [...prev, seat];
+      }
+      return prev;
+    });
+  };
+  //#endregion
+
+  //#region HandleReservation
   const handleReservation = () => {
     if (selectedSeats.length < totalSeat) {
       toast.error(
@@ -145,6 +160,7 @@ const Reservation = () => {
 
     reservation({ reservation: requestData, token });
   };
+  //#endregion
 
   return (
     <div className="container">
@@ -159,6 +175,7 @@ const Reservation = () => {
                 {cart[index]?.play?.title}
               </Text>
               {/* Adult */}
+              //#region Adult
               {Array.from({ length: cart[index].totalAdult }).map(
                 (_, adultIndex) => {
                   const firstNameKey = `${index}-adult-${adultIndex}-firstName`;
@@ -203,6 +220,7 @@ const Reservation = () => {
                   );
                 }
               )}
+              //#endregion
               {/* Child */}
               {Array.from({ length: cart[index].totalChildren }).map(
                 (_, childIndex) => {
@@ -294,7 +312,7 @@ const Reservation = () => {
             </div>
           ))}
         </Grid.Col>
-
+        //#region STAGE
         <Grid.Col span={6} px="20px">
           {/* Stage Area */}
           <div style={{ textAlign: "center", marginBottom: "20px" }}>
@@ -352,15 +370,20 @@ const Reservation = () => {
                           style={{
                             width: "40px",
                             height: "40px",
-                            background: selectedSeats.some(
-                              (s) => s.seatNumber === seat.seatNumber
-                            )
+                            background: bookedSeatIds.has(seat.id)
+                              ? "#aaa"
+                              : selectedSeats.some(
+                                  (s) => s.seatNumber === seat.seatNumber
+                                )
                               ? "#4CAF50"
-                              : "#ddd",
+                              : "#ddd", //
+
                             textAlign: "center",
                             lineHeight: "40px",
                             borderRadius: "5px",
-                            cursor: "pointer",
+                            cursor: bookedSeatIds.has(seat.id)
+                              ? "not-allowed"
+                              : "pointer",
                             fontWeight: "bold",
                           }}
                         >
@@ -374,6 +397,7 @@ const Reservation = () => {
             </div>
           ))}
         </Grid.Col>
+        //#endregion
       </Grid>
       {cart && cart.length > 0 && (
         <Text size="lg" ml="xs">
@@ -395,6 +419,7 @@ const Reservation = () => {
           ml="md"
           onClick={() => {
             clearCart();
+            navigate("/");
           }}
         >
           Clear cart

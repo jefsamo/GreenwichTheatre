@@ -241,6 +241,7 @@ const Play = () => {
               <Button
                 variant="light"
                 rightSection={<IconArrowRight size={14} />}
+                disabled={cart.length === 0}
                 onClick={() => {
                   navigate("/reservation");
                 }}
