@@ -37,6 +37,7 @@ const Play = () => {
   const [children, setChildren] = useState(0);
   const [oldAgePensioner, setOldAgePensioner] = useState(0);
   const { showAddToCart, setShowAddToCart, addToCart, cart } = useCartContext();
+
   const title = play?.title;
   const user = getCurrentUser();
 
@@ -229,13 +230,13 @@ const Play = () => {
                   });
                 }}
                 disabled={
-                  !playExistInCart
-                    ? !(adult || children || oldAgePensioner)
-                    : false
+                  cart.length === 1 ||
+                  (!playExistInCart && !(adult || children || oldAgePensioner))
                 }
               >
                 Add to cart
               </Button>
+
               <Space h="md" />
               <Button
                 variant="light"
