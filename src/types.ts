@@ -114,3 +114,9 @@ export type InitialPlayStateType = {
   isLoading: boolean;
   error: Error | null;
 };
+
+export type Seat = {
+  id: string;
+  seatNumber: string;
+  price: number;
+};
