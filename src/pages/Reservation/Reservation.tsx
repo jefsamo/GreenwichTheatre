@@ -3,23 +3,77 @@ import { DateInput } from "@mantine/dates";
 import { useMemo, useState } from "react";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useCartContext } from "../../context/cartContext";
-import { calculateYear, getCurrentUser } from "../../constants";
-import { ReservationType } from "../../types";
+import { calculateYear, filterSeat, getCurrentUser } from "../../constants";
+import { ReservationType, Seat } from "../../types";
 import { useReservation } from "../../hooks/useReservation";
+import { useGetSeats } from "../../hooks/useGetSeats";
+import toast from "react-hot-toast";
 
 const Reservation = () => {
   const { cart, clearCart } = useCartContext();
   const { isPending, reservation } = useReservation();
+  const { seats } = useGetSeats();
+  const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
+
+  const handleSeatSelection = (seat: Seat) => {
+    setSelectedSeats((prev) => {
+      if (prev.some((s) => s.seatNumber === seat.seatNumber)) {
+        // Deselect seat
+        return prev.filter((s) => s.seatNumber !== seat.seatNumber);
+      }
+      if (prev.length < totalSeat) {
+        // Select seat if limit not exceeded
+        return [...prev, seat];
+      }
+      return prev; // Prevent selecting beyond the total seat count
+    });
+  };
+  const totalSeatPrice = useMemo(() => {
+    return selectedSeats.reduce((total, seat) => total + seat.price, 0);
+  }, [selectedSeats]);
+  console.log(totalSeatPrice);
+  const totalSeat =
+    cart &&
+    cart?.[0]?.totalAdult +
+      cart?.[0]?.totalChildren +
+      cart?.[0]?.totalOldAgePensioner;
+
+  const seatsA = filterSeat(seats, "A");
+  const seatsB = filterSeat(seats, "B");
+  const seatsC = filterSeat(seats, "C");
+
+  // console.log(seatsA);
   const sections = [
-    { name: "Area A", rows: 2, seatsPerRow: 6 },
-    { name: "Area B", rows: 3, seatsPerRow: 8 },
-    { name: "Area C", rows: 2, seatsPerRow: 10 },
+    {
+      name: "Area A",
+      rows: 2,
+      seatsPerRow: 6,
+      length: seatsA?.length,
+      seats: seatsA as Seat[],
+    },
+    {
+      name: "Area B",
+      rows: 3,
+      seatsPerRow: 8,
+      length: seatsB?.length,
+      seats: seatsB as Seat[],
+    },
+    {
+      name: "Area C",
+      rows: 2,
+      seatsPerRow: 10,
+      length: seatsC?.length,
+      seats: seatsC as Seat[],
+    },
   ];
 
   const totalPrices = useMemo(
     () => cart.reduce((acc, cur) => acc + cur.totalPrice, 0),
     [cart]
   );
+
+  const totalPriceAndSeat = totalPrices + totalSeatPrice;
+  console.log(totalPriceAndSeat);
 
   const maxAgeForChild = 11;
   const maxAgeForAdult = 60;
@@ -36,7 +90,7 @@ const Reservation = () => {
 
   const handleChange = (key: string, newValue: string | Date | null) => {
     setValues((prev) => {
-      if (prev[key] === newValue) return prev; // Prevent unnecessary state updates
+      if (prev[key] === newValue) return prev;
       return { ...prev, [key]: newValue };
     });
   };
@@ -49,9 +103,16 @@ const Reservation = () => {
     return null;
   };
 
-  const token = user.token;
+  const token = user?.token;
 
   const handleReservation = () => {
+    if (selectedSeats.length < totalSeat) {
+      toast.error(
+        `Please select ${totalSeat - selectedSeats.length} more seat(s).`
+      );
+      return;
+    }
+
     const requestData: ReservationType = {
       firstName: user.firstName,
       lastName: user.lastName,
@@ -60,12 +121,11 @@ const Reservation = () => {
         .map((cartItem, index) => {
           const generateTickets = (
             category: "adult" | "child" | "oap",
-            count: number,
-            seatId: string
+            count: number
           ) => {
             return Array.from({ length: count }, (_, i) => ({
               playId: cartItem.play.id,
-              seatId,
+              seatId: selectedSeats[i].id,
               firstName: values[`${index}-${category}-${i}-firstName`] || "",
               lastName: values[`${index}-${category}-${i}-lastName`] || "",
               dateOfBirth:
@@ -74,25 +134,13 @@ const Reservation = () => {
           };
 
           return [
-            ...generateTickets(
-              "adult",
-              cartItem.totalAdult,
-              "252a4c14-429d-4526-9638-ff0586b53727"
-            ),
-            ...generateTickets(
-              "child",
-              cartItem.totalChildren,
-              "abd840bc-9b47-48fb-96ec-19455c0ff85d"
-            ),
-            ...generateTickets(
-              "oap",
-              cartItem.totalOldAgePensioner,
-              "d87963ec-d4e7-4945-81e8-81a54e86baee"
-            ),
+            ...generateTickets("adult", cartItem.totalAdult),
+            ...generateTickets("child", cartItem.totalChildren),
+            ...generateTickets("oap", cartItem.totalOldAgePensioner),
           ];
         })
-        .flat(), // Flatten the array after mapping
-      totalPrice: totalPrices,
+        .flat(),
+      totalPrice: totalPriceAndSeat,
     };
 
     reservation({ reservation: requestData, token });
@@ -279,7 +327,11 @@ const Reservation = () => {
                   justifyContent: "center",
                 }}
               >
-                {[...Array(section.rows)].map((_, rowIndex) => (
+                {[
+                  ...Array(
+                    Math.ceil(section.seats.length / section.seatsPerRow)
+                  ),
+                ].map((_, rowIndex) => (
                   <div
                     key={rowIndex}
                     style={{
@@ -288,23 +340,33 @@ const Reservation = () => {
                       gap: "10px",
                     }}
                   >
-                    {[...Array(section.seatsPerRow)].map((_, seatIndex) => (
-                      <div
-                        key={seatIndex}
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          background: "#ddd",
-                          textAlign: "center",
-                          lineHeight: "40px",
-                          borderRadius: "5px",
-                          cursor: "pointer",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {rowIndex * section.seatsPerRow + seatIndex + 1}
-                      </div>
-                    ))}
+                    {section.seats
+                      .slice(
+                        rowIndex * section.seatsPerRow,
+                        (rowIndex + 1) * section.seatsPerRow
+                      )
+                      .map((seat, _) => (
+                        <div
+                          key={seat.seatNumber}
+                          onClick={() => handleSeatSelection(seat)}
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            background: selectedSeats.some(
+                              (s) => s.seatNumber === seat.seatNumber
+                            )
+                              ? "#4CAF50"
+                              : "#ddd",
+                            textAlign: "center",
+                            lineHeight: "40px",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {seat.seatNumber}
+                        </div>
+                      ))}
                   </div>
                 ))}
               </div>
@@ -315,7 +377,7 @@ const Reservation = () => {
       </Grid>
       {cart && cart.length > 0 && (
         <Text size="lg" ml="xs">
-          Total price: {totalPrices.toFixed(2)}
+          Total ticket price + Total Seat price: {totalPriceAndSeat}
         </Text>
       )}
       <Center>

@@ -1,4 +1,4 @@
-import { CartType, UserType } from "./types";
+import { CartType, Seat, UserType } from "./types";
 
 export const BASE_URL = "https://localhost:7251/api";
 
@@ -28,4 +28,17 @@ export const getLocalStorageCart: () => [] | CartType[] = () => {
 
 export const calculateYear = (age: number): Date => {
   return new Date(new Date().setFullYear(new Date().getFullYear() - age));
+};
+
+export const filterSeat = (seats: Seat[] = [], seatLetter: "A" | "B" | "C") => {
+  return seats
+    ?.filter((seat: Seat) => seat.seatNumber.includes(seatLetter))
+    .sort(
+      (a, b) =>
+        extractSeatNumber(a.seatNumber) - extractSeatNumber(b.seatNumber)
+    );
+};
+
+export const extractSeatNumber = (seat: string): number => {
+  return parseInt(seat.replace(/\D/g, ""), 10);
 };

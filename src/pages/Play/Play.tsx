@@ -114,9 +114,11 @@ const Play = () => {
     rating,
     playId,
   };
+
   const handleReview = () => {
     writeReview({ review, token: user.token });
   };
+
   return (
     <div className="container">
       <Grid gutter="xl">
