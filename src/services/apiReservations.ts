@@ -24,3 +24,13 @@ export const getAllTickets = async (token: string) => {
   });
   return res.data.data;
 };
+
+export const getAllReservations = async (token: string) => {
+  const res = await axios.get(`${BASE_URL}/reservation/reservations`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data.data;
+};

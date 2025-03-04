@@ -133,7 +133,7 @@ const Reservation = () => {
       lastName: user.lastName,
       email: user.email,
       tickets: cart
-        .map((cartItem, index) => {
+        ?.map((cartItem, index) => {
           const generateTickets = (
             category: "adult" | "child" | "oap",
             count: number
@@ -175,7 +175,6 @@ const Reservation = () => {
                 {cart[index]?.play?.title}
               </Text>
               {/* Adult */}
-              //#region Adult
               {Array.from({ length: cart[index].totalAdult }).map(
                 (_, adultIndex) => {
                   const firstNameKey = `${index}-adult-${adultIndex}-firstName`;
@@ -220,7 +219,6 @@ const Reservation = () => {
                   );
                 }
               )}
-              //#endregion
               {/* Child */}
               {Array.from({ length: cart[index].totalChildren }).map(
                 (_, childIndex) => {
@@ -312,7 +310,6 @@ const Reservation = () => {
             </div>
           ))}
         </Grid.Col>
-        //#region STAGE
         <Grid.Col span={6} px="20px">
           {/* Stage Area */}
           <div style={{ textAlign: "center", marginBottom: "20px" }}>
@@ -397,7 +394,6 @@ const Reservation = () => {
             </div>
           ))}
         </Grid.Col>
-        //#endregion
       </Grid>
       {cart && cart.length > 0 && (
         <Text size="lg" ml="xs">
