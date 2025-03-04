@@ -1,0 +1,282 @@
+[
+  {
+    "SeatNumber": "B18",
+    "Id": "05771f62-9e56-453d-a6cc-a4f343c15de2",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "C3",
+    "Id": "070f2f6a-aee4-456d-9490-ffd9cf98e53d",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "C15",
+    "Id": "084c51a2-39bd-471a-b4e2-484135c79a0c",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "B16",
+    "Id": "0b75488b-e4d9-4792-81d9-560166dfe818",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "B4",
+    "Id": "0bbc571b-37b5-41b6-abf6-81510e9157e3",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "B2",
+    "Id": "0cc3a3d9-1266-4c55-97a7-dd9bfaad8eb1",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "C8",
+    "Id": "100567d5-7d10-43ba-820c-deec115a412e",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "C19",
+    "Id": "1ad46c57-7536-4063-810d-5f55d42e62c3",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "B3",
+    "Id": "1da78035-7f04-4904-b2eb-6202dd57dff0",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "A9",
+    "Id": "252a4c14-429d-4526-9638-ff0586b53727",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "C18",
+    "Id": "257f01af-668a-45c6-afea-57f803aefc73",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "C16",
+    "Id": "27ab386d-e915-4366-b597-d34e2dc1ce90",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "B24",
+    "Id": "319650e7-4f2f-4641-b2ba-29b68d86a974",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "C10",
+    "Id": "3bda5522-14c3-4be2-ba45-30d570355ab6",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "A1",
+    "Id": "47613868-64af-49de-93d2-5a1e163465db",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "C6",
+    "Id": "49a95b29-4e16-485e-9420-74321e186e2b",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "B1",
+    "Id": "4f6f10b6-bebb-486c-8d9a-b282756027d2",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "C20",
+    "Id": "55948949-7bda-4cb0-ad4f-931199e5952b",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "C5",
+    "Id": "5d7d91ca-9c9c-463b-bf4f-a296cabc5e86",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "B11",
+    "Id": "5ed45f51-e6f3-4892-8701-142799f25e26",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "B10",
+    "Id": "5f3baacd-9dc9-4980-8945-ef64df1a6b7b",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "B9",
+    "Id": "5f96db84-14cc-4d18-a0f2-78b52437c265",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "A11",
+    "Id": "5fc9d0e3-ca78-485e-aa42-a2e471d5aa8c",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "B13",
+    "Id": "604b5b86-f040-47d2-b3db-d43142ce1046",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "C7",
+    "Id": "664d4968-820f-462b-837f-3884d6dc1343",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "B8",
+    "Id": "6872b638-99d3-4e77-a153-47a9eefa64c5",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "C17",
+    "Id": "6fe1a212-b510-456e-87de-c6a4a7b0049c",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "B12",
+    "Id": "71716d6c-2227-4d20-88c1-87272dff9ccf",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "A8",
+    "Id": "756a3b14-a0d7-46d5-8e76-cbcd04881d7a",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "C1",
+    "Id": "825ef9b6-b683-483f-9b70-88436720c0c1",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "B5",
+    "Id": "882a1648-227e-405f-9267-4f941b4e0208",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "B14",
+    "Id": "8b344e93-d010-4090-9715-99e42f854db6",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "B6",
+    "Id": "93d9ed5e-199e-44bb-a993-b887d0b7691e",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "C11",
+    "Id": "99e43ddc-d09f-4474-81e9-47d5dc5e067e",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "B19",
+    "Id": "9c44ad50-d3d4-4e58-8e3d-172cafba9898",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "B7",
+    "Id": "a35988f2-1016-4bf7-b98f-3c30dc595db4",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "B23",
+    "Id": "a733a79c-18c4-4915-92db-a15c0b6243d2",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "A7",
+    "Id": "a9bdc283-7c30-4b5d-a6de-4d9784822cb4",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "A10",
+    "Id": "abd840bc-9b47-48fb-96ec-19455c0ff85d",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "A3",
+    "Id": "ac044671-42fe-4950-a676-3b0777284631",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "C4",
+    "Id": "af840077-9f8b-427c-8337-dc7e0b445972",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "B22",
+    "Id": "b1c9ddb0-aeb7-46a8-8347-97cdfaff20d9",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "A12",
+    "Id": "b214f8af-86dd-46fd-a349-8df1f49c616d",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "C12",
+    "Id": "b68f3656-5e95-4a8e-bb83-f87dbc3588bc",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "A6",
+    "Id": "b96fa7b8-9c34-45bf-be7d-a38041505911",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "B20",
+    "Id": "c0c54ccc-7b22-4cca-b718-fc53bc06c8dd",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "A5",
+    "Id": "c55e447f-1fb2-4fdf-bd49-5376ee4d0732",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "B15",
+    "Id": "ccd00467-a01e-4838-8271-3d01ebee2ea6",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "A2",
+    "Id": "d87963ec-d4e7-4945-81e8-81a54e86baee",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "A4",
+    "Id": "de3fac7e-e5d9-4d2d-b57e-f90d21980eeb",
+    "Price": 10.8
+  },
+  {
+    "SeatNumber": "C9",
+    "Id": "e27555b2-d6fd-4e78-8636-ca31620b15ec",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "C13",
+    "Id": "e33adca6-80a8-464c-a26a-6898cf2e3b93",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "C2",
+    "Id": "ea6f69d8-ad99-461b-82eb-406232bbae23",
+    "Price": 7
+  },
+  {
+    "SeatNumber": "C14",
+    "Id": "ef4176f9-349c-4eac-bc6b-c507f8f1ec88",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "B21",
+    "Id": "f72ef714-09d2-4008-9d9b-4d7c63f9230b",
+    "Price": 9
+  },
+  {
+    "SeatNumber": "B17",
+    "Id": "f7354388-8406-4073-b23f-cb717c607c73",
+    "Price": 9
+  }
+]

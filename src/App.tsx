@@ -9,6 +9,8 @@ import { Toaster } from "react-hot-toast";
 import { NotFound } from "./pages/NotFound/NotFound";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import Cart from "./pages/Cart/Cart";
+import MyTicket from "./pages/MyTicket/MyTicket";
+import { Reservations } from "./pages/Reservations/Reservations";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
             }
           >
             <Route path="/reservation" element={<Reservation />} />
+            <Route path="/reservations" element={<Reservations />} />
+            <Route path="/tickets" element={<MyTicket />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
