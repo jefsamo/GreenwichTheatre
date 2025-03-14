@@ -1,9 +1,6 @@
-import { IconPencil, IconTrash } from "@tabler/icons-react";
 import {
-  ActionIcon,
-  Anchor,
-  Avatar,
   Badge,
+  Button,
   Center,
   Group,
   Loader,
@@ -11,58 +8,14 @@ import {
   Text,
 } from "@mantine/core";
 import { useReservations } from "../../hooks/useReservations";
-
-// const data = [
-//   {
-//     avatar:
-//       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png",
-//     name: "Robert Wolfkisser",
-//     paymentStatus: "Paid",
-//     email: "rob_wolf@gmail.com",
-//     phone: "+44 (452) 886 09 12",
-//   },
-//   {
-//     avatar:
-//       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png",
-//     name: "Jill Jailbreaker",
-//     paymentStatus: "Paid",
-//     email: "jj@breaker.com",
-//     phone: "+44 (934) 777 12 76",
-//   },
-//   {
-//     avatar:
-//       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png",
-//     name: "Henry Silkeater",
-//     paymentStatus: "Not paid",
-//     email: "henry@silkeater.io",
-//     phone: "+44 (901) 384 88 34",
-//   },
-//   {
-//     avatar:
-//       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
-//     name: "Bill Horsefighter",
-//     paymentStatus: "Not paid",
-//     email: "bhorsefighter@gmail.com",
-//     phone: "+44 (667) 341 45 22",
-//   },
-//   {
-//     avatar:
-//       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png",
-//     name: "Jeremy Footviewer",
-//     paymentStatus: "Manager",
-//     email: "jeremy@foot.dev",
-//     phone: "+44 (881) 245 65 65",
-//   },
-// ];
-
-// const jobColors: Record<string, string> = {
-//   engineer: "blue",
-//   paid: "cyan",
-//   "not paid": "pink",
-// };
+import { ReservationType } from "../../types";
+import { useMarkReservationAsPaid } from "../../hooks/useMarkReservationAsPaid";
+import { getCurrentUser } from "../../constants";
 
 export function Reservations() {
   const { reservations, isLoading, error } = useReservations();
+  const user = getCurrentUser();
+  const { markAsPaid, isPending } = useMarkReservationAsPaid();
   if (isLoading) {
     return (
       <Center h="100dvh">
@@ -80,42 +33,60 @@ export function Reservations() {
       </div>
     );
   }
-  const rows = reservations.map((item: any) => (
-    <Table.Tr key={item.name}>
+  const rows = reservations?.map((reservation: ReservationType) => (
+    <Table.Tr key={reservation.id}>
       <Table.Td>
         <Group gap="sm">
-          <Avatar size={30} src={item.avatar} radius={30} />
-          <Text fz="sm" fw={500}>
-            {item.firstName}
-          </Text>
+          <div>
+            <Text fz="sm" fw={500}>
+              {reservation.firstName} {reservation.lastName}
+            </Text>
+            <Text fz="xs" c="dimmed">
+              {reservation.email}
+            </Text>
+          </div>
         </Group>
       </Table.Td>
 
       <Table.Td>
-        <Anchor component="button" size="sm">
-          {item.email}
-        </Anchor>
+        <Text fz="xs" c="dimmed">
+          {/* {tickets?.length} */}
+        </Text>
       </Table.Td>
       <Table.Td>
-        <Text fz="sm">{"07354003284"}</Text>
+        {reservation.createdAt
+          ? new Date(reservation.createdAt).toLocaleDateString("en-GB")
+          : "N/A"}
       </Table.Td>
       <Table.Td>
-        <Badge
-          //   color={jobColors[item.paymentStatus.toLowerCase()]}
-          variant="light"
+        {reservation.hasPaid ? (
+          <Badge color="green" variant="light">
+            Paid
+          </Badge>
+        ) : (
+          <Badge color="red" variant="light">
+            Not paid
+          </Badge>
+        )}
+      </Table.Td>
+      <Table.Td>
+        <Button
+          loading={isPending}
+          disabled={reservation.hasPaid}
+          onClick={() => {
+            console.log(reservation.id);
+            markAsPaid({
+              token: user?.token,
+              hasPaid: true,
+              reservationId: reservation.id,
+            });
+            // if (isSuccess) {
+            //   window.location.reload();
+            // }
+          }}
         >
-          {item.hasPaid}
-        </Badge>
-      </Table.Td>
-      <Table.Td>
-        <Group gap={0} justify="flex-end">
-          <ActionIcon variant="subtle" color="gray">
-            <IconPencil size={16} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon variant="subtle" color="red">
-            <IconTrash size={16} stroke={1.5} />
-          </ActionIcon>
-        </Group>
+          {reservation.hasPaid ? "Paid" : "Update Payment"}
+        </Button>
       </Table.Td>
     </Table.Tr>
   ));
@@ -126,11 +97,11 @@ export function Reservations() {
         <Table verticalSpacing="sm">
           <Table.Thead>
             <Table.Tr>
-              <Table.Th>Employee</Table.Th>
-              <Table.Th>Job title</Table.Th>
-              <Table.Th>Email</Table.Th>
+              <Table.Th>Name</Table.Th>
+              <Table.Th>Number of tickets</Table.Th>
+              <Table.Th>Reservation Date</Table.Th>
               <Table.Th>Payment Status</Table.Th>
-              <Table.Th />
+              <Table.Th></Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{rows}</Table.Tbody>

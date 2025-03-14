@@ -101,6 +101,9 @@ export type ReservationType = {
   email: string;
   totalPrice: number;
   tickets: TicketType[];
+  id?: string;
+  hasPaid?: boolean;
+  createdAt?: Date;
 };
 
 export type InitialPlayStateType = {
@@ -129,4 +132,10 @@ export type Ticket = {
   lastName: string;
   hasCheckedIn: boolean;
   dateOfBirth: Date;
+};
+
+export type MarkAsPaidType = {
+  token: string;
+  hasPaid: boolean;
+  reservationId: string | undefined;
 };

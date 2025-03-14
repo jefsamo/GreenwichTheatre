@@ -1,8 +1,8 @@
 import { CartType, Seat, UserType } from "./types";
 
-// export const BASE_URL = "https://localhost:7251/api";
-export const BASE_URL =
-  "https://greenwichcommunitytheatre20250304222028-bwf3d0bgg2c9bca3.canadacentral-01.azurewebsites.net/api";
+export const BASE_URL = "https://localhost:7251/api";
+// export const BASE_URL =
+//   "https://greenwichcommunitytheatre20250304222028-bwf3d0bgg2c9bca3.canadacentral-01.azurewebsites.net/api";
 
 export const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user")!) as UserType;
