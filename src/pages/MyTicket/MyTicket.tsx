@@ -1,5 +1,0 @@
-const MyTicket = () => {
-  return <div className="container">My Ticket</div>;
-};
-
-export default MyTicket;

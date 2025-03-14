@@ -47,8 +47,8 @@ export function Header() {
                 </>
               )}
               {user && user.role !== "Operator" && (
-                <Link to="/tickets">
-                  <Button variant="default">My Tickets</Button>
+                <Link to="/my-reservations">
+                  <Button variant="default">My Reservations</Button>
                 </Link>
               )}
               {user && user.role === "Operator" && (
