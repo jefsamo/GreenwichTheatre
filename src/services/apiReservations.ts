@@ -45,13 +45,19 @@ export const getAllReservationsByUser = async (token: string) => {
   return res.data.data;
 };
 
-export const getAllTicketsByUser = async (token: string) => {
-  const res = await axios.get(`${BASE_URL}/reservation/tickets-user`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const getAllTicketsByReservationId = async (
+  token: string,
+  reservationId: string
+) => {
+  const res = await axios.get(
+    `${BASE_URL}/reservation/tickets-user/${reservationId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return res.data.data;
 };
 

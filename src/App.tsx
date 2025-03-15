@@ -11,10 +11,12 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import Cart from "./pages/Cart/Cart";
 import MyReservations from "./pages/MyReservations/MyReservations";
 import { Reservations } from "./pages/Reservations/Reservations";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function App() {
   return (
     <>
+      <ReactQueryDevtools initialIsOpen={false} />
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
