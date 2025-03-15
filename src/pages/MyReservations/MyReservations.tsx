@@ -1,14 +1,48 @@
-import { Badge, Center, Group, Loader, Table, Text } from "@mantine/core";
+import {
+  Badge,
+  Center,
+  Group,
+  Loader,
+  Modal,
+  Table,
+  Text,
+} from "@mantine/core";
 import { useGetAllReservationsByUser } from "../../hooks/useGetAllReservationsByUser";
-import { ReservationType } from "../../types";
-import { useGetAllTicketsByUser } from "../../hooks/useGetAllTicketsByUser";
+import { ReservationType, Ticket } from "../../types";
+import { useDisclosure } from "@mantine/hooks";
+import { useQuery } from "@tanstack/react-query";
+import { getAllTicketsByReservationId } from "../../services/apiReservations";
+import { getCurrentUser } from "../../constants";
+import { useEffect, useState } from "react";
+import TicketDetails from "../../components/TicketDetails/TicketDetails";
+import { useGetPlayOther } from "../../hooks/useGetPlayOther";
+// import { useGetAllTicketsByUser } from "../../hooks/useGetAllTicketsByUser";
 
 export default function MyReservations() {
+  const user = getCurrentUser();
   const { reservations, isLoading, error } = useGetAllReservationsByUser();
-  const { tickets } = useGetAllTicketsByUser();
-  // console.log(reservations);
-  // console.log(tickets);
 
+  const [opened, { open, close }] = useDisclosure(false);
+  const [reservationId, setReservationId] = useState("");
+  const [playId, setPlayId] = useState("");
+
+  const { play } = useGetPlayOther(playId);
+
+  const {
+    isLoading: isLoadingTickets,
+    data: tickets,
+    // error: ticketError,
+  } = useQuery({
+    queryKey: [`tickets-user/${reservationId}`],
+    queryFn: () => getAllTicketsByReservationId(user?.token, reservationId),
+  });
+  console.log(tickets);
+
+  useEffect(() => {
+    if (tickets && tickets.length > 0) {
+      setPlayId(tickets[0].playId);
+    }
+  }, [tickets]);
   if (isLoading) {
     return (
       <Center h="90dvh">
@@ -42,7 +76,7 @@ export default function MyReservations() {
 
       <Table.Td>
         <Text fz="xs" c="dimmed">
-          {tickets?.length}
+          {/* {tickets?.length} */}
         </Text>
       </Table.Td>
       <Table.Td>
@@ -52,9 +86,26 @@ export default function MyReservations() {
       </Table.Td>
       <Table.Td>
         {reservation.hasPaid ? (
-          <Badge color="green" variant="light">
-            Paid
-          </Badge>
+          <>
+            <Badge color="green" variant="light">
+              Paid
+            </Badge>
+
+            {reservation.hasPaid && (
+              <Badge
+                color="violet"
+                variant="gradient"
+                onClick={() => {
+                  open();
+                  setReservationId(reservation.id!);
+                  setPlayId(tickets?.[0].playId);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                View
+              </Badge>
+            )}
+          </>
         ) : (
           <Badge color="red" variant="light">
             Not paid
@@ -66,6 +117,20 @@ export default function MyReservations() {
 
   return (
     <div className="container">
+      <Modal opened={opened} onClose={close} title="Ticket Details">
+        {/* Modal content */}
+        {isLoadingTickets && <Loader />}
+        {!isLoadingTickets && (
+          <>
+            <Text fz="xs" c="dimmed">
+              Number of tickets: {tickets?.length}
+            </Text>
+            {tickets?.map((ticket: Ticket, index: number) => (
+              <TicketDetails key={index} ticket={ticket} play={play} />
+            ))}
+          </>
+        )}
+      </Modal>
       <Table.ScrollContainer minWidth={800}>
         <Table verticalSpacing="sm">
           <Table.Thead>
@@ -76,7 +141,13 @@ export default function MyReservations() {
               <Table.Th>Payment Status</Table.Th>
             </Table.Tr>
           </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
+          <Table.Tbody>
+            {reservations.length > 0 ? (
+              rows
+            ) : (
+              <Text c="dimmed">You have no reservations</Text>
+            )}
+          </Table.Tbody>
         </Table>
       </Table.ScrollContainer>
     </div>

@@ -132,10 +132,16 @@ export type Ticket = {
   lastName: string;
   hasCheckedIn: boolean;
   dateOfBirth: Date;
+  ticketCode?: string;
 };
 
 export type MarkAsPaidType = {
   token: string;
   hasPaid: boolean;
   reservationId: string | undefined;
+};
+
+export type TicketProps = {
+  ticket: Ticket;
+  play: PlayCardType;
 };

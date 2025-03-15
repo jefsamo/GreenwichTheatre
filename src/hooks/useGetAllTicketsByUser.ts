@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllTicketsByUser } from "../services/apiReservations";
+import { getAllTicketsByReservationId } from "../services/apiReservations";
 
 import { getCurrentUser } from "../constants";
 
@@ -11,7 +11,7 @@ export const useGetAllTicketsByUser = () => {
     error,
   } = useQuery({
     queryKey: ["tickets-user"],
-    queryFn: () => getAllTicketsByUser(user?.token),
+    queryFn: () => getAllTicketsByReservationId(user?.token, ""),
   });
 
   return { isLoading, tickets, error };

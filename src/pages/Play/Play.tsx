@@ -77,6 +77,10 @@ const Play = () => {
   // 25% for oap and chidlren discount = 0.25
   const twentyFivePercentDiscount = 0.25;
   const { description, mainImageUrl, price, timeOfPlay } = play as PlayCardType;
+  // const description = play?.description || "";
+  // const mainImageUrl = play?.mainImageUrl || "";
+  // const price = play?.price || 0;
+  // const timeOfPlay = play?.timeOfPlay || "";
   const adultPrice = price;
   const childrenAndOapPrice = price - price * twentyFivePercentDiscount;
 
