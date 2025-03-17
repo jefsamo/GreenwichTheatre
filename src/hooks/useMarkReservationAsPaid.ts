@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { markReservationAsPaid } from "../services/apiReservations";
 import { MarkAsPaidType } from "../types";
+import { AxiosError } from "axios";
 
 export const useMarkReservationAsPaid = () => {
   const queryClient = useQueryClient();
@@ -18,9 +19,16 @@ export const useMarkReservationAsPaid = () => {
       queryClient.invalidateQueries({ queryKey: ["reservations"] });
       toast.success("Payment status updated successfully");
     },
-    onError: (err) => {
+    onError: (err: AxiosError<{ message: string }>) => {
       console.log("Error", err);
-      toast.error("Something went wrong! Try again later.");
+
+      if (err.message.includes("Network Error")) {
+        toast.error("Unable to connect to server!");
+      } else if (err.response?.data?.message) {
+        toast.error(err.response.data.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     },
   });
 

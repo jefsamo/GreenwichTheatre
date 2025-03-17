@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { checkInCustomer } from "../services/apiReservations";
 import { CheckInType } from "../types";
+import { AxiosError } from "axios";
 
 export const useCheckIn = () => {
   const queryClient = useQueryClient();
@@ -18,9 +19,16 @@ export const useCheckIn = () => {
       queryClient.invalidateQueries({ queryKey: ["checkin"] });
       toast.success("Check-in successful");
     },
-    onError: (err: any) => {
+    onError: (err: AxiosError<{ message: string }>) => {
       console.log("Error", err);
-      toast.error(`${err?.response?.data.message}`);
+
+      if (err.message.includes("Network Error")) {
+        toast.error("Unable to connect to server!");
+      } else if (err.response?.data?.message) {
+        toast.error(err.response.data.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     },
   });
 
