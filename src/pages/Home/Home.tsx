@@ -31,7 +31,6 @@ const Home = () => {
           {plays?.map((play: PlayCardType) => {
             return <PlayCard key={play.id} play={play} />;
           })}
-          {/* {renderedPlays} */}
         </div>
       </div>
     </div>

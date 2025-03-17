@@ -1,5 +1,5 @@
 import { IconLogout, IconShoppingBag } from "@tabler/icons-react";
-import { Badge, Box, Button, Group, Input } from "@mantine/core";
+import { Alert, Badge, Box, Button, Group, Input } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -106,6 +106,17 @@ export function Header() {
           </Group>
         </div>
       </header>
+      <Alert
+        color="blue"
+        variant="light"
+        radius="md"
+        withCloseButton
+        title="Special Offer!"
+        className="discount-banner"
+      >
+        Book your tickets from <b>Monday to Thursday</b> and enjoy a{" "}
+        <b>10% discount</b>!
+      </Alert>
     </Box>
   );
 }
