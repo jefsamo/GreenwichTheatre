@@ -1,4 +1,4 @@
-import { Center, Loader, Text } from "@mantine/core";
+import { Alert, Center, Loader, Text } from "@mantine/core";
 import { PlayCard } from "../../components/PlayCard/PlayCard";
 import "./Home.css";
 import { PlayCardType } from "../../types";
@@ -31,7 +31,6 @@ const Home = () => {
           {plays?.map((play: PlayCardType) => {
             return <PlayCard key={play.id} play={play} />;
           })}
-          {/* {renderedPlays} */}
         </div>
       </div>
     </div>
