@@ -33,6 +33,7 @@ export type UserType = {
   email: string;
   token: string;
   role: string;
+  isSocialClub?: boolean;
 };
 
 export type Response = {
@@ -144,4 +145,9 @@ export type MarkAsPaidType = {
 export type TicketProps = {
   ticket: Ticket;
   play: PlayCardType;
+};
+
+export type CheckInType = {
+  token: string;
+  ticketCode: string;
 };

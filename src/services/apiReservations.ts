@@ -1,5 +1,5 @@
 import axios from "axios";
-import { MarkAsPaidType, ReservationType } from "../types";
+import { CheckInType, MarkAsPaidType, ReservationType } from "../types";
 import { BASE_URL } from "../constants";
 
 export const makeReservation = async (
@@ -76,5 +76,19 @@ export const markReservationAsPaid = async ({
       },
     }
   );
-  return res.data?.data || res.data;
+  return res.data?.data;
+};
+
+export const checkInCustomer = async ({ token, ticketCode }: CheckInType) => {
+  const res = await axios.post(
+    `${BASE_URL}/reservation/check-in`,
+    { ticketCode },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data?.data;
 };
