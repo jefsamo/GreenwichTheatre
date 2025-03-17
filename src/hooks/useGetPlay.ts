@@ -16,20 +16,3 @@ export const useGetPlay = () => {
 
   return { isLoading, play, error };
 };
-
-// export const useGetPlay = (id: string = "") => {
-//   const { playId } = useParams();
-//   const actualId = id ?? playId; // Use id if provided, otherwise fallback to playId
-
-//   const {
-//     isLoading,
-//     data: play,
-//     error,
-//   } = useQuery({
-//     queryKey: [`play-${id ?? playId}`],
-//     queryFn: () => getPlay(id! ?? playId),
-//     enabled: !!actualId, // Prevent query execution if no ID is available
-//   });
-
-//   return { isLoading, play, error };
-// };

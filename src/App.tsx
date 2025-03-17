@@ -12,6 +12,7 @@ import Cart from "./pages/Cart/Cart";
 import MyReservations from "./pages/MyReservations/MyReservations";
 import { Reservations } from "./pages/Reservations/Reservations";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import CheckIn from "./pages/CheckIn/CheckIn";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/reservation" element={<Reservation />} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/my-reservations" element={<MyReservations />} />
+            <Route path="/check-in" element={<CheckIn />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

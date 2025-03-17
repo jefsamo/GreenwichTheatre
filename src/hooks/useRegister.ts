@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { register as registerApi } from "../services/apiAuth";
 import { toast } from "react-hot-toast";
 import { RegisterType } from "../types";
+import { AxiosError } from "axios";
 
 export const useRegister = () => {
   const navigate = useNavigate();
@@ -34,9 +35,16 @@ export const useRegister = () => {
       toast.success("Registration successful");
       navigate("/", { replace: true });
     },
-    onError: (err) => {
+    onError: (err: AxiosError<{ message: string }>) => {
       console.log("Error", err);
-      toast.error("Something went wrong! Try again later.");
+
+      if (err.message.includes("Network Error")) {
+        toast.error("Unable to connect to server!");
+      } else if (err.response?.data?.message) {
+        toast.error(err.response.data.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     },
   });
 

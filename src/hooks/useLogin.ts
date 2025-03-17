@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login as loginApi } from "../services/apiAuth";
 import { toast } from "react-hot-toast";
 import { LoginType, UserType } from "../types";
+import { AxiosError } from "axios";
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -36,12 +37,15 @@ export const useLogin = () => {
         }
       }, 10 * 60 * 1000);
     },
-    onError: (err) => {
+    onError: (err: AxiosError<{ message: string }>) => {
       console.log("Error", err);
-      if (err instanceof Error && err.message.includes("Network Error")) {
+
+      if (err.message.includes("Network Error")) {
         toast.error("Unable to connect to server!");
+      } else if (err.response?.data?.message) {
+        toast.error(err.response.data.message);
       } else {
-        toast.error("Incorrect email or password");
+        toast.error("An unexpected error occurred");
       }
     },
   });
