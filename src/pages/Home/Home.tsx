@@ -1,4 +1,4 @@
-import { Alert, Center, Loader, Text } from "@mantine/core";
+import { Center, Loader, Text } from "@mantine/core";
 import { PlayCard } from "../../components/PlayCard/PlayCard";
 import "./Home.css";
 import { PlayCardType } from "../../types";
