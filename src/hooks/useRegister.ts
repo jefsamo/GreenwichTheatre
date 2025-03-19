@@ -35,13 +35,14 @@ export const useRegister = () => {
       toast.success("Registration successful");
       navigate("/", { replace: true });
     },
-    onError: (err: AxiosError<{ message: string }>) => {
+    onError: (err: AxiosError<{ message: string; errors: any }>) => {
       console.log("Error", err);
 
       if (err.message.includes("Network Error")) {
         toast.error("Unable to connect to server!");
       } else if (err.response?.data?.message) {
-        toast.error(err.response.data.message);
+        const errors = err.response.data.errors;
+        toast.error(errors.toString());
       } else {
         toast.error("An unexpected error occurred");
       }

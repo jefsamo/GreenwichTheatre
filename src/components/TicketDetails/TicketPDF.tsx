@@ -15,6 +15,7 @@ export const TicketPDF = ({ ticket, play }: TicketProps) => (
         </Text>
         <Text>Play: {play?.title}</Text>
         <Text>Ticket code: {ticket?.ticketCode}</Text>
+        {/* <Text>Seat Number: {play?.}</Text> */}
         <Text>
           Date:{" "}
           {play?.timeOfPlay

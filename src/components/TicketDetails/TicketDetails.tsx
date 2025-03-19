@@ -20,9 +20,7 @@ const TicketDetails = ({ ticket, play }: TicketProps) => {
           : "N/A"}
       </Text>
       <Space h="md" />
-      {/* <Flex justify="flex-end">
-        <Button>Generate Ticket</Button>
-      </Flex> */}
+
       <PDFDownloadLink
         document={<TicketPDF ticket={ticket} play={play} />}
         fileName={`Ticket_${ticket.firstName}_${ticket.lastName}.pdf`}

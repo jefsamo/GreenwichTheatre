@@ -312,87 +312,90 @@ const Reservation = () => {
         </Grid.Col>
         <Grid.Col span={6} px="20px">
           {/* Stage Area */}
-          <div style={{ textAlign: "center", marginBottom: "20px" }}>
-            <Text
-              size="xl"
-              fw="bolder"
-              style={{
-                background: "black",
-                color: "white",
-                padding: "10px",
-                borderRadius: "8px",
-              }}
-            >
-              🎤 STAGE
-            </Text>
-          </div>
 
-          {sections.map((section) => (
-            <div key={section.name}>
-              <Text size="lg" fw="500">
-                {section.name}
-              </Text>
-              <Space h="md" />
-
-              {/* Seat Grid */}
-              <div
+          {tickets?.length > 0 && (
+            <div style={{ textAlign: "center", marginBottom: "20px" }}>
+              <Text
+                size="xl"
+                fw="bolder"
                 style={{
-                  display: "grid",
-                  gap: "5px",
-                  justifyContent: "center",
+                  background: "black",
+                  color: "white",
+                  padding: "10px",
+                  borderRadius: "8px",
                 }}
               >
-                {[
-                  ...Array(
-                    Math.ceil(section.seats.length / section.seatsPerRow)
-                  ),
-                ].map((_, rowIndex) => (
-                  <div
-                    key={rowIndex}
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      gap: "10px",
-                    }}
-                  >
-                    {section.seats
-                      .slice(
-                        rowIndex * section.seatsPerRow,
-                        (rowIndex + 1) * section.seatsPerRow
-                      )
-                      .map((seat, _) => (
-                        <div
-                          key={seat.seatNumber}
-                          onClick={() => handleSeatSelection(seat)}
-                          style={{
-                            width: "40px",
-                            height: "40px",
-                            background: bookedSeatIds.has(seat.id)
-                              ? "#aaa"
-                              : selectedSeats.some(
-                                  (s) => s.seatNumber === seat.seatNumber
-                                )
-                              ? "#4CAF50"
-                              : "#ddd", //
-
-                            textAlign: "center",
-                            lineHeight: "40px",
-                            borderRadius: "5px",
-                            cursor: bookedSeatIds.has(seat.id)
-                              ? "not-allowed"
-                              : "pointer",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {seat.seatNumber}
-                        </div>
-                      ))}
-                  </div>
-                ))}
-              </div>
-              <Space h="lg" />
+                🎤 STAGE
+              </Text>
             </div>
-          ))}
+          )}
+
+          {tickets?.length > 0 &&
+            sections.map((section) => (
+              <div key={section.name}>
+                <Text size="lg" fw="500">
+                  {section.name}
+                </Text>
+                <Space h="md" />
+
+                {/* Seat Grid */}
+                <div
+                  style={{
+                    display: "grid",
+                    gap: "5px",
+                    justifyContent: "center",
+                  }}
+                >
+                  {[
+                    ...Array(
+                      Math.ceil(section.seats.length / section.seatsPerRow)
+                    ),
+                  ].map((_, rowIndex) => (
+                    <div
+                      key={rowIndex}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        gap: "10px",
+                      }}
+                    >
+                      {section.seats
+                        .slice(
+                          rowIndex * section.seatsPerRow,
+                          (rowIndex + 1) * section.seatsPerRow
+                        )
+                        .map((seat) => (
+                          <div
+                            key={seat.seatNumber}
+                            onClick={() => handleSeatSelection(seat)}
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              background: bookedSeatIds.has(seat.id)
+                                ? "#aaa"
+                                : selectedSeats.some(
+                                    (s) => s.seatNumber === seat.seatNumber
+                                  )
+                                ? "#4CAF50"
+                                : "#ddd",
+                              textAlign: "center",
+                              lineHeight: "40px",
+                              borderRadius: "5px",
+                              cursor: bookedSeatIds.has(seat.id)
+                                ? "not-allowed"
+                                : "pointer",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {seat.seatNumber}
+                          </div>
+                        ))}
+                    </div>
+                  ))}
+                </div>
+                <Space h="lg" />
+              </div>
+            ))}
         </Grid.Col>
       </Grid>
       {cart && cart.length > 0 && (

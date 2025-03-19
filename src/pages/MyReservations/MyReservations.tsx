@@ -77,6 +77,7 @@ export default function MyReservations() {
       <Table.Td>
         <Text fz="xs" c="dimmed">
           {/* {tickets?.length} */}
+          --
         </Text>
       </Table.Td>
       <Table.Td>

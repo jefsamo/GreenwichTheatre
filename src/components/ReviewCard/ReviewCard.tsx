@@ -1,7 +1,9 @@
 import { Avatar, Group, Rating, Text } from "@mantine/core";
 import { ReviewCardProp } from "../../types";
+import { getCurrentUser } from "../../constants";
 
 export const ReviewCard = ({ review }: ReviewCardProp) => {
+  const user = getCurrentUser();
   const { comment, rating } = review;
   return (
     <div>
@@ -12,9 +14,11 @@ export const ReviewCard = ({ review }: ReviewCardProp) => {
           radius="xl"
         />
         <div>
-          <Text size="sm">Jacob Warnhalter</Text>
+          <Text size="sm">
+            {user?.firstName} {user?.lastName}
+          </Text>
           <Text size="xs" c="dimmed">
-            10 minutes ago
+            {/* 10 minutes ago */}
           </Text>
 
           <Rating defaultValue={rating} value={rating} />
