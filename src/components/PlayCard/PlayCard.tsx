@@ -5,7 +5,9 @@ import { PlayCardProp } from "../../types";
 import { truncateWords } from "../../constants";
 
 export function PlayCard({ play }: PlayCardProp) {
-  const { id, description } = play;
+  const { id, description, availableSeats } = play;
+
+  const isSoldOut = availableSeats === 0;
 
   return (
     <Card withBorder radius="md" className={classes.card}>
@@ -15,13 +17,15 @@ export function PlayCard({ play }: PlayCardProp) {
         </Link>
       </Card.Section>
 
-      <Badge
-        className={classes.rating}
-        variant="gradient"
-        gradient={{ from: "yellow", to: "red" }}
-      >
-        outstanding
-      </Badge>
+      {isSoldOut && (
+        <Badge
+          className={classes.rating}
+          variant="gradient"
+          gradient={{ from: "yellow", to: "red" }}
+        >
+          Sold out
+        </Badge>
+      )}
 
       <Text className={classes.title} fw={500} component="a">
         {play.title}

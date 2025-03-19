@@ -1,4 +1,8 @@
-import { IconLogout, IconShoppingBag } from "@tabler/icons-react";
+import {
+  IconLogout,
+  IconShoppingBag,
+  IconStarFilled,
+} from "@tabler/icons-react";
 import { Alert, Badge, Box, Button, Group, Input } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Header.module.css";
@@ -47,9 +51,24 @@ export function Header() {
                 </>
               )}
               {user && user.role !== "Operator" && (
-                <Link to="/my-reservations">
-                  <Button variant="default">My Reservations</Button>
-                </Link>
+                <>
+                  <Link to="/my-reservations">
+                    <Button variant="default">My Reservations</Button>
+                  </Link>
+                  {user?.isSocialClub && (
+                    <Badge size="lg" circle>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <IconStarFilled size="xs" />
+                      </div>
+                    </Badge>
+                  )}
+                </>
               )}
               {user && user.role === "Operator" && (
                 <>

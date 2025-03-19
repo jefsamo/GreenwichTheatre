@@ -34,6 +34,7 @@ function App() {
               </ProtectedRoute>
             }
           >
+            {/* <Route path="/cart" element={<Cart />} /> */}
             <Route path="/reservation" element={<Reservation />} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/my-reservations" element={<MyReservations />} />
