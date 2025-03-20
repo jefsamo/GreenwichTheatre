@@ -48,6 +48,8 @@ export type Review = {
   rating: number;
   comment: string;
   playId?: string;
+  createdAt?: Date;
+  userId?: string;
 };
 
 export type CustomerTypeProp = {

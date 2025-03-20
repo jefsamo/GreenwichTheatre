@@ -36,7 +36,6 @@ export default function MyReservations() {
     queryKey: [`tickets-user/${reservationId}`],
     queryFn: () => getAllTicketsByReservationId(user?.token, reservationId),
   });
-  console.log(tickets);
 
   useEffect(() => {
     if (tickets && tickets.length > 0) {

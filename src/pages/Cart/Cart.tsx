@@ -4,7 +4,6 @@ import { CartType } from "../../types";
 
 const Cart = () => {
   const { cart } = useCartContext();
-  console.log(cart);
   return (
     <div className="container">
       <div className="cart-container">

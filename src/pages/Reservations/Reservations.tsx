@@ -74,15 +74,11 @@ export function Reservations() {
           loading={isPending}
           disabled={reservation.hasPaid}
           onClick={() => {
-            console.log(reservation.id);
             markAsPaid({
               token: user?.token,
               hasPaid: true,
               reservationId: reservation.id,
             });
-            // if (isSuccess) {
-            //   window.location.reload();
-            // }
           }}
         >
           {reservation.hasPaid ? "Paid" : "Update Payment"}

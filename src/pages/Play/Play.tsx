@@ -129,7 +129,6 @@ const Play = () => {
       <Grid gutter="xl">
         <Grid.Col span={6}>
           <Image radius="md" src={mainImageUrl} />
-          {playId}
           <Space h="lg" />
           <Text size="lg" fw={700}>
             Reviews
@@ -160,31 +159,33 @@ const Play = () => {
             <Text size="md">No reviews for this play</Text>
           )}
 
-          {!isOperator && (
-            <>
-              <Text size="lg" fw={700}>
-                Write Review
-              </Text>
-              <Rating defaultValue={1} value={rating} onChange={setRating} />
+          {!user ||
+            (!isOperator && (
+              <>
+                <Text size="lg" fw={700}>
+                  Write Review
+                </Text>
+                <Rating defaultValue={1} value={rating} onChange={setRating} />
 
-              <Space h="md" />
-              <Textarea
-                placeholder="Write a review..."
-                value={comment}
-                onChange={(event) => setComment(event.currentTarget.value)}
-              />
-              <Space h="md" />
-              <Button
-                variant="light"
-                loading={isPending}
-                onClick={() => {
-                  handleReview();
-                }}
-              >
-                Submit
-              </Button>
-            </>
-          )}
+                <Space h="md" />
+                <Textarea
+                  placeholder="Write a review..."
+                  value={comment}
+                  onChange={(event) => setComment(event.currentTarget.value)}
+                />
+                <Space h="md" />
+                <Button
+                  variant="light"
+                  loading={isPending}
+                  disabled={!rating || !comment}
+                  onClick={() => {
+                    handleReview();
+                  }}
+                >
+                  Submit
+                </Button>
+              </>
+            ))}
         </Grid.Col>
         <Grid.Col span={6}>
           <Text size="lg" fw={700}>
