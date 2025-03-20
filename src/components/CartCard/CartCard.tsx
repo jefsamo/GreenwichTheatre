@@ -6,7 +6,6 @@ type CartCardProps = {
   cart: CartType;
 };
 const CartCard = ({ cart }: CartCardProps) => {
-  console.log(cart);
   const { play } = cart;
   const { imageUrl, title, description } = play;
   return (

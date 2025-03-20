@@ -33,3 +33,9 @@ export const register = async ({
 
   return res.data.data;
 };
+
+export const getUser = async (id: string) => {
+  const res = await axios.get(`${BASE_URL}/auth/user/${id}`);
+
+  return res?.data?.data;
+};

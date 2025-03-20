@@ -400,7 +400,7 @@ const Reservation = () => {
       </Grid>
       {cart && cart.length > 0 && (
         <Text size="lg" ml="xs">
-          Total ticket price + Total Seat price: {totalPriceAndSeat}
+          Total ticket price + Total Seat price: {totalPriceAndSeat.toFixed(2)}
         </Text>
       )}
       <Center>
